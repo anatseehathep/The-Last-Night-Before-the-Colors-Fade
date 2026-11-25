@@ -997,6 +997,19 @@
       #passport-screen .progress-row { margin-bottom: 12px; }
       #passport-screen .passport-card { padding-top: 58px; }
       #passport-screen .passport-card > .back-btn { top: 8px; }
+
+      /* Keep the long scene question scrollable past its last choice. */
+      #question-screen.is-scene-question { padding-bottom: max(88px, calc(env(safe-area-inset-bottom) + 72px)); }
+
+      /* Center the district choices when they fit; allow the screen to grow when they do not. */
+      #district-screen > .screen-center {
+        flex: 1 0 auto;
+        min-height: calc(100dvh - 150px);
+        justify-content: safe center;
+        padding-top: 0;
+        padding-bottom: max(16px, env(safe-area-inset-bottom));
+      }
+      #district-screen .district-intro .back-btn { top: 0; left: 0; }
     }
 
     @media (prefers-reduced-motion: reduce) {
