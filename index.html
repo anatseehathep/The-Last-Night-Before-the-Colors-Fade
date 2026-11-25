@@ -459,6 +459,10 @@
     .option:focus-visible, .option:active { border-color: rgba(182,163,255,.68); outline: none; }
     .option.selected { border-color: rgba(182,163,255,.8); background: linear-gradient(105deg, rgba(182,163,255,.17), rgba(167,216,255,.07)); box-shadow: inset 0 0 0 1px rgba(182,163,255,.12); }
     .option-text { color: #ededed; font-size: 13px; line-height: 1.65; }
+    #question-screen.is-first-question .question-card h3,
+    #question-screen.is-scene-question .question-card h3 { text-align: center; }
+    #question-screen.is-first-question .option-text,
+    #question-screen.is-scene-question .option-text { text-align: center; }
     .option-check { color: var(--cyan); opacity: 0; font-size: 15px; }
     .option.selected .option-check { opacity: 1; }
 
@@ -898,7 +902,14 @@
       .progress-row { margin-bottom: 12px; }
       .question-layout { gap: 10px; }
       #question-screen.is-first-question .question-layout,
-      #question-screen.is-scene-question .question-layout { padding-top: clamp(12px, 3svh, 26px); }
+      #question-screen.is-scene-question .question-layout {
+        justify-content: safe center;
+        padding-top: clamp(12px, 3svh, 26px);
+      }
+      #question-screen.is-first-question .question-card h3,
+      #question-screen.is-scene-question .question-card h3 { text-align: center; }
+      #question-screen.is-first-question .option-text,
+      #question-screen.is-scene-question .option-text { text-align: center; }
       #job-screen .question-layout { padding: clamp(56px, 7svh, 66px) 0 clamp(18px, 3svh, 28px); }
       #job-screen .job-prompt,
       #job-screen #job-options { position: relative; top: clamp(180px, 28dvh, 205px); }
@@ -1000,6 +1011,12 @@
 
       /* Keep the long scene question scrollable past its last choice. */
       #question-screen.is-scene-question { padding-bottom: max(88px, calc(env(safe-area-inset-bottom) + 72px)); }
+      #job-screen .question-layout {
+        justify-content: safe center;
+        padding-top: 0;
+        transform: translateY(clamp(150px, 15svh, 190px));
+      }
+      #job-screen .question-card { padding-top: 58px; }
 
       /* Center the district choices when they fit; allow the screen to grow when they do not. */
       #district-screen > .screen-center {
