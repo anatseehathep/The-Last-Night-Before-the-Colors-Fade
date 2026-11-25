@@ -1014,9 +1014,11 @@
       #job-screen .question-layout {
         justify-content: safe center;
         padding-top: 0;
-        transform: translateY(clamp(150px, 15svh, 190px));
       }
-      #job-screen .question-card { padding-top: 58px; }
+      #job-screen .question-card {
+        top: clamp(150px, 15svh, 190px);
+        padding-top: 58px;
+      }
 
       /* Center the district choices when they fit; allow the screen to grow when they do not. */
       #district-screen > .screen-center {
