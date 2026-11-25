@@ -961,6 +961,44 @@
       #district-screen > .screen-center { min-height: 0; }
     }
 
+    /* Keep phone content inside the live viewport and leave a clear row for back controls. */
+    @media (max-width: 600px) {
+      html, body { min-height: 100%; }
+      body, main { min-height: 100vh; min-height: 100dvh; }
+      .sky, .sky-art { height: 100vh; height: 100dvh; }
+
+      .quiz-screen {
+        min-height: 100vh;
+        min-height: 100dvh;
+        padding-top: calc(env(safe-area-inset-top) + 58px);
+        padding-bottom: max(16px, env(safe-area-inset-bottom));
+      }
+      .quiz-screen .back-btn { top: calc(env(safe-area-inset-top) + 8px); }
+      .question-card .back-btn,
+      #question-screen.is-scene-intro .story-column .back-btn,
+      #district-screen .district-intro .back-btn,
+      #job-screen .question-card .back-btn { top: 0; }
+      .question-card { padding-top: 58px; }
+      #question-screen.is-scene-intro .story-column { padding-top: 58px; }
+      #district-screen > .screen-center { min-height: 0; }
+      #district-screen .district-intro { padding-top: 52px; }
+      #district-screen .district-intro .back-btn { left: 0; }
+      #job-screen .question-layout { padding-top: 0; }
+      #job-screen .job-prompt, #job-screen #job-options { top: 0; }
+
+      .intro, .story-intro-screen, .result-screen {
+        min-height: 100vh;
+        min-height: 100dvh;
+        padding-bottom: max(18px, env(safe-area-inset-bottom));
+      }
+      .story-intro-screen { padding-top: max(58px, calc(env(safe-area-inset-top) + 42px)); }
+      .story-home-btn { top: max(0px, env(safe-area-inset-top)); }
+      #passport-screen { padding-top: calc(env(safe-area-inset-top) + 58px); }
+      #passport-screen .progress-row { margin-bottom: 12px; }
+      #passport-screen .passport-card { padding-top: 58px; }
+      #passport-screen .passport-card > .back-btn { top: 8px; }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
     }
