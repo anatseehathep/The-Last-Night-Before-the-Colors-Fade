@@ -1,1151 +1,77 @@
 <!doctype html>
 <html lang="th">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#1a1a1a">
   <title>คืนสุดท้ายก่อนสีจะหายไป — Imagine City</title>
-  <style>
-    @font-face {
-      font-family: "League Spartan";
-      src: url("assets/fonts/LeagueSpartan-Bold.ttf") format("truetype");
-      font-style: normal;
-      font-weight: 700;
-      font-display: swap;
-    }
 
-    @font-face {
-      font-family: "Kanit";
-      src: url("assets/fonts/Kanit-SemiBold.ttf") format("truetype");
-      font-style: normal;
-      font-weight: 600;
-      font-display: swap;
-    }
+  <link rel="stylesheet" href="css/style.css">
 
-    :root {
-      color-scheme: dark;
-      --ink: #f5f5f5;
-      --muted: #6b6f7c;
-      --line: rgba(245, 245, 245, .16);
-      --panel: rgba(26, 26, 26, .88);
-      --lavender: #b6a3ff;
-      --cyan: #a7d8ff;
-      --pink: #f7a7b5;
-      --gold: #f7a7b5;
-      --night: #1a1a1a;
-    }
 
-    * { box-sizing: border-box; }
-
-    html { min-width: 320px; background: var(--night); }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      overflow-x: clip;
-      color: var(--ink);
-      background:
-        radial-gradient(ellipse at 28% 76%, rgba(247, 167, 181, .12), transparent 34rem),
-        radial-gradient(ellipse at 77% 65%, rgba(107, 111, 124, .11), transparent 30rem),
-        linear-gradient(180deg, #30264f 0%, #21182e 38%, #0c0b14 100%);
-      font-family: "League Spartan", "Kanit", sans-serif;
-      letter-spacing: 1.5px;
-    }
-
-    button, input { font: inherit; }
-    button { color: inherit; }
-
-    .sky {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      overflow: hidden;
-      pointer-events: none;
-    }
-
-    .sky-art { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .7; }
-
-    .sky::after {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(26,26,26,.28), transparent 32%, rgba(26,26,26,.08) 58%, rgba(26,26,26,.62));
-      content: "";
-    }
-
-    .stars {
-      position: absolute;
-      inset: 0;
-      background-image:
-        radial-gradient(circle at 7% 18%, rgba(245,245,245,.95) 0 1.3px, transparent 2px),
-        radial-gradient(circle at 18% 72%, rgba(167,216,255,.9) 0 1.2px, transparent 2px),
-        radial-gradient(circle at 28% 36%, rgba(245,245,245,.82) 0 1.2px, transparent 2px),
-        radial-gradient(circle at 39% 12%, rgba(247,167,181,.86) 0 1.3px, transparent 2px),
-        radial-gradient(circle at 48% 83%, rgba(245,245,245,.9) 0 1.2px, transparent 2px),
-        radial-gradient(circle at 58% 27%, rgba(182,163,255,.95) 0 1.4px, transparent 2px),
-        radial-gradient(circle at 67% 63%, rgba(245,245,245,.8) 0 1.1px, transparent 2px),
-        radial-gradient(circle at 77% 14%, rgba(167,216,255,.9) 0 1.2px, transparent 2px),
-        radial-gradient(circle at 86% 44%, rgba(245,245,245,.95) 0 1.3px, transparent 2px),
-        radial-gradient(circle at 94% 81%, rgba(247,167,181,.78) 0 1.2px, transparent 2px),
-        radial-gradient(circle at 13% 48%, rgba(245,245,245,.72) 0 1px, transparent 1.8px),
-        radial-gradient(circle at 33% 91%, rgba(182,163,255,.84) 0 1.2px, transparent 2px),
-        radial-gradient(circle at 53% 55%, rgba(245,245,245,.8) 0 1px, transparent 1.8px),
-        radial-gradient(circle at 72% 91%, rgba(167,216,255,.82) 0 1.1px, transparent 1.8px),
-        radial-gradient(circle at 91% 25%, rgba(245,245,245,.75) 0 1px, transparent 1.8px);
-      background-repeat: no-repeat;
-      opacity: .88;
-      animation: star-drift 8s ease-in-out infinite alternate;
-    }
-
-    .stars::before, .stars::after {
-      position: absolute;
-      inset: 0;
-      content: "";
-      background-repeat: no-repeat;
-      pointer-events: none;
-    }
-
-    .stars::before {
-      background-image:
-        radial-gradient(circle, #f5f5f5 1.6px, rgba(245,245,245,.22) 2px, transparent 5px),
-        radial-gradient(circle, #a7d8ff 1.3px, rgba(167,216,255,.2) 2px, transparent 5px),
-        radial-gradient(circle, #f7a7b5 1.4px, rgba(247,167,181,.2) 2px, transparent 5px),
-        radial-gradient(circle, #b6a3ff 1.3px, rgba(182,163,255,.22) 2px, transparent 5px),
-        radial-gradient(circle, #f5f5f5 1px, rgba(245,245,245,.18) 2px, transparent 4px);
-      background-position: 23% 24%, 82% 34%, 62% 78%, 9% 83%, 46% 48%;
-      background-size: 13px 13px, 12px 12px, 12px 12px, 12px 12px, 9px 9px;
-      animation: star-twinkle 4s ease-in-out infinite alternate;
-    }
-
-    @keyframes star-twinkle { from { opacity: .55; } to { opacity: 1; } }
-    @keyframes star-drift { from { transform: translateY(0); } to { transform: translateY(-4px); } }
-
-    .app-shell { position: relative; z-index: 1; width: min(1180px, calc(100% - 64px)); margin: 0 auto; }
-
-    main { min-height: 100vh; }
-
-    .screen { display: none; }
-    .screen.active { display: block; }
-    .screen.is-leaving > :not(.progress-row) { animation: disappear .11s ease both; pointer-events: none; }
-    .screen.screen-entering > :not(.progress-row) { animation: appear .42s ease both; }
-    .screen.screen-entering, .screen.is-choice-lock { pointer-events: none; }
-    @keyframes appear { from { opacity: 0; transform: translateY(9px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes disappear { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-5px); } }
-    @keyframes story-content-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes choice-in { from { opacity: 0; transform: translateY(7px) scale(.99); } to { opacity: 1; transform: translateY(0) scale(1); } }
-    @keyframes choice-confirm { 0% { transform: scale(1); } 45% { transform: scale(.985); filter: brightness(1.2); box-shadow: 0 0 22px rgba(182,163,255,.28); } 100% { transform: scale(1); } }
-    .screen-entering .story-intro-card,
-    .screen-entering .story-column,
-    .screen-entering .question-card,
-    .screen-entering .district-intro,
-    .screen-entering .district-list,
-    .screen-entering .passport-card,
-    .screen-entering .passport-intro,
-    .screen-entering .passport-pass-illustration,
-    .screen-entering .passport-form,
-    .screen-entering .result-hero,
-    .screen-entering .result-grid,
-    .screen-entering .result-bottom,
-    .screen-entering .result-panel,
-    .screen-entering .result-actions,
-    .screen-entering .intro h1,
-    .screen-entering .scene-wrap,
-    .screen-entering #start-btn,
-    .screen-entering .fine-print,
-    .screen-entering .story-intro-actions { animation: story-content-in .36s ease both; }
-    .screen-entering .options > .option,
-    .screen-entering .district-list > .district-card { animation: choice-in .34s ease both; }
-    .screen-entering .options > :nth-child(1), .screen-entering .district-list > :nth-child(1) { animation-delay: .02s; }
-    .screen-entering .options > :nth-child(2), .screen-entering .district-list > :nth-child(2) { animation-delay: .04s; }
-    .screen-entering .options > :nth-child(3), .screen-entering .district-list > :nth-child(3) { animation-delay: .06s; }
-    .screen-entering .options > :nth-child(4), .screen-entering .district-list > :nth-child(4) { animation-delay: .08s; }
-    .screen-entering .options > :nth-child(5), .screen-entering .district-list > :nth-child(5) { animation-delay: .1s; }
-    .screen-entering .passport-field { animation: choice-in .34s ease both; }
-    .screen-entering .passport-field:nth-of-type(1) { animation-delay: .02s; }
-    .screen-entering .passport-field:nth-of-type(2) { animation-delay: .04s; }
-    .screen-entering .passport-field:nth-of-type(3) { animation-delay: .06s; }
-    .screen-entering .passport-field:nth-of-type(4) { animation-delay: .08s; }
-    .option.is-picking, .district-card.is-picking { animation: choice-confirm .14s ease both; }
-
-    .intro {
-      display: flex;
-      min-height: 100vh;
-      flex-direction: column;
-      align-items: center;
-      padding: 30px 0 54px;
-      text-align: center;
-    }
-
-    .intro-content { display: contents; }
-
-    .eyebrow {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      color: var(--cyan);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-    }
-
-    .eyebrow::before { width: 28px; height: 1px; content: ""; background: currentColor; }
-
-    h1, h2, h3, p { margin-top: 0; }
-    .intro h1 {
-      max-width: 760px;
-      margin: 12px 0 0;
-      font-family: "League Spartan", "Kanit", sans-serif;
-      font-size: clamp(44px, 6.4vw, 78px);
-      font-weight: 500;
-      letter-spacing: 1.5px;
-      line-height: .96;
-    }
-
-    .intro h1 { order: 2; }
-
-    .intro h1 span { display: block; color: var(--lavender); white-space: nowrap; }
-
-    .primary-btn, .quiet-btn {
-      display: inline-flex;
-      min-height: 48px;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      border: 0;
-      border-radius: 999px;
-      padding: 0 23px;
-      cursor: pointer;
-      transition: transform .18s, filter .18s, background .18s;
-    }
-
-    .primary-btn {
-      color: var(--night);
-      background: linear-gradient(100deg, var(--pink), var(--lavender) 58%, var(--cyan));
-      box-shadow: 0 8px 26px rgba(182, 163, 255, .2);
-      font-weight: 750;
-    }
-
-    #start-btn, #story-start-btn, #scene-question-btn, #restart-btn, #passport-submit-btn {
-      border: 2px solid transparent;
-      color: var(--ink);
-      background: transparent;
-      box-shadow: none;
-      transition: transform .18s, filter .18s, background .2s, box-shadow .2s;
-    }
-    #start-btn { order: 6; margin-top: 24px; }
-
-    .primary-btn:hover { transform: translateY(-2px); filter: brightness(1.08); }
-    #start-btn:hover, #start-btn:focus-visible, #start-btn:active,
-    #story-start-btn:hover, #story-start-btn:focus-visible, #story-start-btn:active,
-    #scene-question-btn:hover, #scene-question-btn:focus-visible, #scene-question-btn:active,
-    #restart-btn:hover, #restart-btn:focus-visible, #restart-btn:active,
-    #passport-submit-btn:hover, #passport-submit-btn:focus-visible, #passport-submit-btn:active {
-      border-color: transparent;
-      color: var(--ink);
-      background: linear-gradient(rgba(26,26,26,.92), rgba(26,26,26,.92)) padding-box, linear-gradient(100deg, rgba(247,167,181,.68), rgba(182,163,255,.68) 58%, rgba(167,216,255,.68)) border-box;
-      box-shadow: 0 0 14px rgba(182, 163, 255, .12);
-    }
-    .primary-btn:disabled { cursor: not-allowed; opacity: .46; transform: none; }
-    .quiet-btn { border: 1px solid var(--line); color: #d5d3e8; background: rgba(255,255,255,.035); }
-    .quiet-btn:hover { background: rgba(255,255,255,.09); }
-
-    .fine-print { order: 7; margin: 12px 0 0; color: #9a9da6; font-size: 11px; }
-
-    .scene-wrap { position: relative; order: 3; display: flex; width: min(600px, 100%); min-height: clamp(300px, 39vw, 410px); flex-direction: column; align-items: center; justify-content: center; margin: -4px 0 0; }
-    .image-slot { position: relative; flex: none; width: min(600px, 100%); aspect-ratio: 520 / 470; overflow: hidden; }
-    .image-slot img { position: absolute; top: 50%; left: 50%; display: block; width: 250%; max-width: none; height: 160%; object-fit: contain; object-position: center; transform: translate(-50%, -50%); }
-    .story-intro-screen {
-      display: flex;
-      min-height: 100svh;
-      align-items: center;
-      justify-content: center;
-      padding: 48px 0;
-    }
-    .story-intro-card {
-      position: relative;
-      width: min(760px, 100%);
-      padding: 18px 0;
-      text-align: center;
-    }
-    .story-home-btn {
-      position: absolute;
-      z-index: 2;
-      top: 18px;
-      left: 0;
-      display: grid;
-      width: 44px;
-      height: 44px;
-      place-items: center;
-      border: 0;
-      border-radius: 0;
-      padding: 0;
-      color: #aaa9c2;
-      background: transparent;
-      cursor: pointer;
-      font-size: 28px;
-      line-height: 1;
-    }
-    .story-home-btn:hover { color: var(--ink); background: transparent; }
-    .story-intro-sky {
-      position: relative;
-      width: min(380px, 100%);
-      height: 78px;
-      margin: 0 auto 2px;
-      background:
-        radial-gradient(circle at 8% 65%, rgba(167,216,255,.8) 0 1px, transparent 2px),
-        radial-gradient(circle at 27% 28%, rgba(245,245,245,.75) 0 1px, transparent 2px),
-        radial-gradient(circle at 72% 24%, rgba(247,167,181,.8) 0 1px, transparent 2px),
-        radial-gradient(circle at 92% 63%, rgba(182,163,255,.8) 0 1px, transparent 2px);
-    }
-    .story-intro-sky span { position: absolute; z-index: 1; color: var(--cyan); text-shadow: 0 0 9px rgba(167,216,255,.85); }
-    .story-intro-sky span:nth-child(1) { top: 28px; left: 18%; font-size: 15px; }
-    .story-intro-sky span:nth-child(2) { top: 10px; left: 48%; color: var(--pink); font-size: 21px; }
-    .story-intro-sky span:nth-child(3) { top: 31px; right: 16%; font-size: 13px; }
-    .story-intro-card .eyebrow { position: relative; z-index: 1; color: var(--cyan); }
-    .story-intro-card .eyebrow::before { display: none; }
-    .story-intro-card h2 {
-      position: relative;
-      z-index: 1;
-      margin: 18px 0 22px;
-      font-family: "League Spartan", "Kanit", sans-serif;
-      font-size: clamp(36px, 6vw, 58px);
-      font-weight: 500;
-      letter-spacing: 1.5px;
-      line-height: 1.2;
-    }
-    .story-intro-copy {
-      position: relative;
-      z-index: 1;
-      max-width: 680px;
-      margin: 0 auto;
-      color: #c6c5ce;
-      font-size: 15px;
-      line-height: 2;
-      text-align: left;
-    }
-    .story-intro-copy p { margin: 0 0 14px; }
-    .story-intro-copy strong { color: var(--pink); font-weight: 650; }
-    .story-intro-ending {
-      display: block;
-      margin-top: 8px;
-      color: var(--ink);
-      font-size: 16px;
-    }
-    .story-intro-actions {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      width: 100%;
-      flex-direction: row;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      margin-top: 30px;
-    }
-    .story-intro-actions .primary-btn { width: auto; }
-    .quiz-screen { position: relative; padding: 36px 0 62px; }
-    .progress-row { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin-bottom: 26px; }
-    .progress-info { display: flex; align-items: baseline; gap: 13px; }
-    .progress-count { color: var(--ink); font-size: 13px; font-weight: 700; }
-    .progress-caption { color: var(--muted); font-size: 12px; }
-    .progress-track { width: min(330px, 44vw); height: 4px; overflow: hidden; border-radius: 10px; background: rgba(255,255,255,.1); }
-    .progress-fill { width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--cyan), var(--lavender), var(--pink)); transition: width .45s ease; }
-
-    .question-layout { display: grid; grid-template-columns: minmax(0, .8fr) minmax(450px, 1.2fr); align-items: start; gap: clamp(28px, 6vw, 84px); }
-    .story-column { position: sticky; top: 28px; padding-top: 16px; }
-    #job-screen { min-height: 100vh; display: flex; flex-direction: column; }
-    #job-screen:not(.active) { display: none; }
-    #job-screen .question-layout { display: flex; flex: 1; align-items: center; justify-content: center; }
-    #job-screen .question-card { max-width: 760px; }
-    #question-screen.is-scene-intro { min-height: 100vh; display: flex; flex-direction: column; }
-    #question-screen.is-scene-intro .question-layout { display: flex; flex: 1; flex-direction: column; justify-content: center; max-width: 760px; width: 100%; margin: 0 auto; }
-    #question-screen.is-first-question,
-    #question-screen.is-scene-question { min-height: 100svh; display: flex; flex-direction: column; }
-    #question-screen.is-scene-intro:not(.active),
-    #question-screen.is-first-question:not(.active),
-    #question-screen.is-scene-question:not(.active) { display: none; }
-    #question-screen.is-first-question .question-layout,
-    #question-screen.is-scene-question .question-layout { display: flex; flex: 1; flex-direction: column; justify-content: center; max-width: 760px; width: 100%; margin: 0 auto; }
-    #question-screen.is-scene-intro .story-column { position: relative; width: 100%; padding: 16px 0 0; text-align: center; }
-    #question-screen.is-scene-intro .story-column p { max-width: 680px; margin-right: auto; margin-left: auto; white-space: pre-line; }
-    #question-screen.is-scene-intro .question-card { display: none; }
-    #question-screen.is-first-question .story-column,
-    #question-screen.is-scene-question .story-column { display: none; }
-    #question-screen.is-first-question .question-card,
-    #question-screen.is-scene-question .question-card { max-width: 760px; margin: 0 auto; }
-    .chapter-tag { display: inline-flex; align-items: center; gap: 8px; color: var(--gold); font-size: 11px; letter-spacing: 1.5px; }
-    .chapter-tag::before { content: "✦"; font-size: 15px; }
-    .story-column h2 { margin: 18px 0 14px; color: var(--ink); font-family: "League Spartan", "Kanit", sans-serif; font-size: clamp(33px, 4vw, 52px); font-weight: 500; letter-spacing: 1.5px; line-height: 1.12; }
-    .story-column p { color: #b8bac1; font-size: 14px; line-height: 1.9; }
-    .shop-row-illustration { display: block; width: min(100%, 560px); height: auto; margin: 20px auto 0; border-radius: 12px; }
-    .shop-row-illustration[hidden] { display: none; }
-    .window-illustration {
-      display: block;
-      width: min(100%, 540px);
-      height: auto;
-      margin: 22px auto 0;
-    }
-    .window-illustration[hidden] { display: none; }
-    .window-illustration img { display: block; width: 100%; height: auto; }
-    .fading-character-illustration { display: block; width: min(100%, 520px); margin: 20px auto 0; }
-    .fading-character-illustration[hidden] { display: none; }
-    .fading-character-illustration img { display: block; width: 100%; height: auto; }
-    .packing-illustration { display: block; width: min(100%, 500px); height: 250px; margin: 20px auto 0; }
-    .packing-illustration[hidden] { display: none; }
-    .packing-illustration img { display: block; width: 100%; height: 100%; object-fit: contain; }
-    .junction-illustration { display: block; width: min(100%, 600px); height: 290px; margin: 20px auto 0; }
-    .junction-illustration[hidden] { display: none; }
-    .junction-illustration img { display: block; width: 100%; height: 100%; object-fit: contain; }
-    .cliff-gate-illustration { display: block; width: min(100%, 560px); height: 260px; margin: 20px auto 0; }
-    .cliff-gate-illustration[hidden] { display: none; }
-    .cliff-gate-illustration img { display: block; width: 100%; height: 100%; object-fit: contain; }
-    .explorer-friends-illustration { display: block; width: min(100%, 520px); height: 240px; margin: 20px auto 0; }
-    .explorer-friends-illustration[hidden] { display: none; }
-    .explorer-friends-illustration img { display: block; width: 100%; height: 100%; object-fit: contain; }
-    .fork-road-illustration { display: block; width: min(100%, 520px); height: 240px; margin: 20px auto 0; }
-    .fork-road-illustration[hidden] { display: none; }
-    .fork-road-illustration img { display: block; width: 100%; height: 100%; object-fit: contain; }
-    .festival-stage-illustration { display: block; width: min(100%, 520px); height: 240px; margin: 20px auto 0; }
-    .festival-stage-illustration[hidden] { display: none; }
-    .festival-stage-illustration img { display: block; width: 100%; height: 100%; object-fit: contain; }
-    .restored-star-illustration { display: block; width: min(100%, 520px); height: 240px; margin: 20px auto 0; }
-    .restored-star-illustration[hidden] { display: none; }
-    .restored-star-illustration img { display: block; width: 100%; height: 100%; object-fit: contain; }
-    .bridge-frame { position: relative; display: block; width: min(100%, 760px); aspect-ratio: 2; overflow: hidden; margin: 20px auto 0; }
-    .bridge-frame[hidden] { display: none; }
-    .bridge-illustration { position: absolute; top: 50%; left: 50%; display: block; width: 190%; max-width: none; height: 190%; object-fit: contain; transform: translate(-50%, -50%); }
-    .scene-story-actions { display: flex; width: min(100%, 506px); flex-direction: row; justify-content: center; align-items: center; gap: 12px; margin: 26px auto 0; }
-    .scene-story-actions .primary-btn { width: auto; min-height: 44px; padding: 0 18px; font-size: 14px; }
-    .scene-story-actions[hidden] { display: none; }
-    .story-star {
-      display: grid;
-      width: 58px;
-      height: 58px;
-      place-items: center;
-      margin-top: 38px;
-      border: 1px solid rgba(247,167,181,.42);
-      border-radius: 50%;
-      color: var(--gold);
-      background: radial-gradient(circle, rgba(247,167,181,.2), rgba(247,167,181,.02) 70%);
-      box-shadow: 0 0 34px rgba(247,167,181,.16);
-      font-size: 25px;
-    }
-
-    .question-card {
-      position: relative;
-      width: 100%;
-      border: 0;
-      border-radius: 24px;
-      padding: clamp(22px, 3.4vw, 38px);
-      background: transparent;
-      box-shadow: none;
-      backdrop-filter: none;
-    }
-
-    .question-kicker { color: var(--muted); font-size: 11px; letter-spacing: 1.5px; }
-    .question-card h3 { margin: 10px 0 8px; color: var(--ink); font-size: clamp(21px, 2.8vw, 29px); font-weight: 650; line-height: 1.45; }
-    .question-hint { margin-bottom: 24px; color: #a9abb3; font-size: 12px; }
-    .quiz-constellation { position: relative; width: min(100%, 620px); height: 150px; margin: 0 auto; }
-    .quiz-constellation span { position: absolute; color: #a7d8ff; text-shadow: 0 0 8px rgba(167,216,255,.9), 0 0 22px rgba(167,216,255,.58); }
-    .question-card .quiz-constellation { display: none; }
-    .quiz-constellation span:nth-child(1) { top: 26px; left: 9%; font-size: 44px; transform: rotate(12deg); }
-    .quiz-constellation span:nth-child(2) { top: 91px; left: 31%; font-size: 25px; }
-    .quiz-constellation span:nth-child(3) { top: 58px; left: 51%; font-size: 30px; transform: rotate(-9deg); }
-    .quiz-constellation span:nth-child(4) { top: 105px; right: 20%; font-size: 25px; transform: rotate(8deg); }
-    .quiz-constellation span:nth-child(5) { top: 81px; right: 8%; font-size: 29px; }
-    .options { display: grid; max-width: 820px; gap: 10px; margin: 0 auto; }
-    .option {
-      position: relative;
-      display: grid;
-      width: 100%;
-      min-height: 64px;
-      grid-template-columns: 1fr 19px;
-      align-items: center;
-      gap: 13px;
-      border: 1px solid rgba(222,221,255,.12);
-      border-radius: 14px;
-      padding: 10px 15px;
-      background: rgba(255,255,255,.035);
-      cursor: pointer;
-      text-align: left;
-      transition: border-color .2s, background .2s, transform .2s;
-    }
-    .option:hover { transform: translateX(3px); border-color: rgba(182,163,255,.6); background: rgba(182,163,255,.07); }
-    .option:focus-visible, .option:active { border-color: rgba(182,163,255,.68); outline: none; }
-    .option.selected { border-color: rgba(182,163,255,.8); background: linear-gradient(105deg, rgba(182,163,255,.17), rgba(167,216,255,.07)); box-shadow: inset 0 0 0 1px rgba(182,163,255,.12); }
-    .option-text { color: #ededed; font-size: 13px; line-height: 1.65; }
-    #question-screen.is-first-question .question-card h3,
-    #question-screen.is-scene-question .question-card h3 { text-align: center; }
-    #question-screen.is-first-question .option-text,
-    #question-screen.is-scene-question .option-text { text-align: center; }
-    .option-check { color: var(--cyan); opacity: 0; font-size: 15px; }
-    .option.selected .option-check { opacity: 1; }
-
-    .quiz-footer { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 24px; }
-    .quiz-screen .back-btn {
-      position: absolute;
-      z-index: 5;
-      top: 28px;
-      left: 0;
-      display: grid;
-      width: 44px;
-      height: 44px;
-      place-items: center;
-      border: 0;
-      border-radius: 0;
-      padding: 0;
-      color: #a9a7c0;
-      background: transparent;
-      cursor: pointer;
-      font-size: 28px;
-      line-height: 1;
-    }
-    .quiz-screen .back-btn:hover { color: var(--ink); background: transparent; }
-    .question-card .back-btn { top: -52px; left: 0; }
-    #question-screen.is-scene-intro .story-column .back-btn { top: -48px; left: 0; }
-    #district-screen .district-intro { position: relative; }
-    #district-screen .district-intro .back-btn { top: -48px; left: calc(24px - (100vw - min(100vw, 620px)) / 2); }
-    .foot-hint { color: #a1a3aa; font-size: 11px; }
-    .district-intro { max-width: 620px; margin: 10px auto 30px; text-align: center; }
-    .district-intro h2 { margin: 17px 0 12px; font-family: "League Spartan", "Kanit", sans-serif; font-size: clamp(36px, 5vw, 58px); font-weight: 500; letter-spacing: 1.5px; }
-    .district-intro p { margin-bottom: 0; color: #c1c2c7; font-size: 14px; line-height: 1.8; }
-    .district-list { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 14px; max-width: 820px; margin: 0 auto; }
-    .district-card {
-      grid-column: span 2;
-      position: relative;
-      min-height: 170px;
-      overflow: hidden;
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      padding: 24px;
-      background: linear-gradient(145deg, rgba(48,45,62,.94), rgba(26,26,26,.96));
-      cursor: pointer;
-      text-align: left;
-      transition: transform .2s, border-color .2s, background .2s;
-    }
-    .district-card:nth-child(4) { grid-column: 2 / span 2; }
-    .district-card:nth-child(5) { grid-column: 4 / span 2; }
-    .district-card::after {
-      position: absolute;
-      width: 140px;
-      height: 140px;
-      right: -43px;
-      bottom: -74px;
-      border: 1px solid rgba(182,164,255,.2);
-      border-radius: 50%;
-      box-shadow: 0 0 0 14px rgba(182,164,255,.025), 0 0 0 29px rgba(182,164,255,.018);
-      content: "";
-    }
-    .district-card:hover { transform: translateY(-3px); border-color: rgba(182,164,255,.55); }
-    .district-card:focus-visible { outline: 1px solid rgba(182,164,255,.68); outline-offset: 2px; }
-    .district-card.selected { border-color: var(--lavender); background: linear-gradient(145deg, rgba(75,63,131,.58), rgba(26,26,26,.96)); box-shadow: 0 0 30px rgba(182,163,255,.1); }
-    .district-code { color: var(--cyan); font-size: 10px; font-weight: 700; letter-spacing: 1.5px; }
-    .district-scene { display: block; width: 100%; aspect-ratio: 2.25; margin: 14px 0 16px; border: 1px solid rgba(182,163,255,.3); border-radius: 12px; }
-    .district-scene img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center 75%; border-radius: inherit; }
-    .district-card h3 { position: relative; z-index: 1; margin: 10px 0 8px; font-family: "League Spartan", "Kanit", sans-serif; font-size: 24px; font-weight: 500; }
-    .district-card p { position: relative; z-index: 1; max-width: 250px; margin: 0; color: #aaa9c2; font-size: 12px; line-height: 1.7; }
-    .job-prompt { margin: 0 0 18px; color: #b8bac1; font-size: 14px; line-height: 1.7; }
-
-    #passport-screen { max-width: 860px; margin: 0 auto; }
-    .passport-card { position: relative; border: 0; border-radius: 0; padding: clamp(22px, 4vw, 38px); background: transparent; box-shadow: none; }
-    .passport-card > .back-btn { top: 12px; left: 12px; }
-    .passport-intro { margin-bottom: 24px; padding-top: 40px; }
-    .passport-intro h2 { margin: 10px 0 8px; font-family: "League Spartan", "Kanit", sans-serif; font-size: clamp(30px, 4vw, 42px); font-weight: 500; line-height: 1.2; }
-    .passport-intro p { margin: 0; color: #b8bac1; font-size: 13px; line-height: 1.8; }
-    .passport-pass-illustration { display: block; width: min(100%, 430px); height: auto; margin: 18px auto 20px; }
-    .passport-pass-illustration[hidden] { display: none; }
-    .passport-pass-illustration svg { display: block; width: 100%; height: auto; }
-    .passport-form { display: grid; gap: 20px; }
-    .passport-field { min-width: 0; margin: 0; border: 0; border-top: 1px solid rgba(222,221,255,.12); padding: 18px 0 0; }
-    .passport-form > .passport-field:first-child { border-top: 0; padding-top: 0; }
-    .passport-field legend, .passport-label { display: block; margin-bottom: 10px; color: #f0eef7; font-size: 14px; font-weight: 650; line-height: 1.6; }
-    .passport-field legend { float: left; width: 100%; }
-    .passport-field legend + * { clear: both; }
-    .passport-input, .passport-select { width: 100%; min-height: 46px; border: 1px solid rgba(222,221,255,.18); border-radius: 12px; padding: 10px 13px; color: var(--ink); background: rgba(255,255,255,.045); }
-    .passport-input::placeholder { color: #898897; }
-    .passport-input:focus, .passport-select:focus { outline: 2px solid rgba(182,163,255,.7); outline-offset: 2px; }
-    .passport-select option { color: var(--ink); background: #302d3b; }
-    .passport-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; clear: both; }
-    .passport-choice { display: flex; min-height: 46px; align-items: center; gap: 10px; border: 1px solid rgba(222,221,255,.13); border-radius: 12px; padding: 9px 12px; color: #dedce8; background: rgba(255,255,255,.035); cursor: pointer; font-size: 12px; line-height: 1.55; }
-    .passport-choice:has(input:checked) { border-color: rgba(182,163,255,.75); background: rgba(182,163,255,.12); }
-    .passport-choice:has(input:focus-visible) { outline: 1px solid rgba(182,163,255,.68); outline-offset: 2px; }
-    .passport-choice input { width: 16px; height: 16px; flex: 0 0 auto; margin: 0; accent-color: var(--lavender); }
-    .passport-hint { clear: both; margin: 8px 0 0; color: #a9abb3; font-size: 11px; line-height: 1.6; }
-    .passport-other { display: none; margin-top: 10px; }
-    .passport-other.visible { display: block; }
-    .passport-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px; margin-top: 8px; }
-    .passport-actions .primary-btn { min-height: 42px; padding: 0 18px; font-size: 13px; }
-
-    .result-screen { padding: 43px 0 80px; }
-    .result-character-stage { position: relative; display: flex; min-height: 300px; align-items: center; justify-content: center; gap: clamp(8px, 3vw, 28px); overflow: hidden; margin: 0 auto 18px; isolation: isolate; }
-    .result-character-stage::before { position: absolute; z-index: -1; width: min(58vw, 520px); aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle, rgba(182,163,255,.2), rgba(247,167,181,.08) 42%, transparent 70%); filter: blur(8px); content: ""; }
-    .result-character-item { display: grid; width: min(100%, 720px); min-width: 0; justify-items: center; margin: 0; }
-    .result-character-stage.is-mixed .result-character-item { width: min(48%, 500px); }
-    .result-character-art { display: block; width: 100%; height: clamp(240px, 34vw, 410px); object-fit: contain; filter: drop-shadow(0 12px 32px rgba(182,163,255,.24)); }
-    .result-character-caption { margin-top: -8px; color: var(--cyan); font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-align: center; }
-    .screen-entering .result-character-stage { animation: result-character-reveal .72s cubic-bezier(.2,.75,.25,1) both; }
-    .screen-entering .result-hero { animation-delay: .14s; }
-    .screen-entering .result-grid { animation-delay: .24s; }
-    .screen-entering .result-bottom { animation-delay: .34s; }
-    @keyframes result-character-reveal { 0% { opacity: 0; transform: translateY(22px) scale(.84); filter: brightness(.75); } 65% { opacity: 1; filter: brightness(1.18); } 100% { opacity: 1; transform: translateY(0) scale(1); filter: brightness(1); } }
-    .screen-entering .result-hero .eyebrow { animation: story-content-in .36s ease .18s both; }
-    .screen-entering .result-hero h2 { animation: story-content-in .36s ease .24s both; }
-    .screen-entering .result-branches { animation: story-content-in .36s ease .3s both; }
-    .screen-entering .result-description { animation: story-content-in .36s ease .36s both; }
-    .screen-entering .result-careers { animation: story-content-in .36s ease .44s both; }
-    .screen-entering .result-meta { animation: story-content-in .36s ease .42s both; }
-    .screen-entering .score-bar { animation: score-fill .8s ease .35s both; }
-    @keyframes score-fill { from { width: 0; } to { width: var(--score-fill); } }
-    .result-hero { position: relative; overflow: visible; border: 0; border-radius: 0; padding: clamp(28px, 5vw, 54px); background: transparent; }
-    .result-hero::after { display: none; }
-    .result-hero h2 { position: relative; z-index: 1; max-width: 790px; margin: 17px 0 15px; font-family: "League Spartan", "Kanit", sans-serif; font-size: clamp(39px, 6vw, 68px); font-weight: 500; letter-spacing: 1.5px; line-height: 1.08; }
-    .result-description { position: relative; z-index: 1; max-width: 700px; margin-bottom: 25px; color: #d0d0d3; font-size: 15px; line-height: 1.9; }
-    .result-careers { position: relative; z-index: 1; margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--line); }
-    .result-careers h3 { margin: 0 0 16px; font-size: 17px; }
-    .result-meta { position: relative; z-index: 1; display: flex; flex-wrap: wrap; gap: 9px; }
-    .pill { border: 1px solid rgba(221,218,255,.2); border-radius: 99px; padding: 8px 12px; color: #d6d3e9; background: rgba(255,255,255,.045); font-size: 11px; }
-    .result-branches { display: flex; flex-wrap: wrap; gap: 9px; margin: 0 0 14px; }
-    .result-branch { border: 1px solid rgba(167,216,255,.35); border-radius: 10px; padding: 9px 12px; color: var(--cyan); background: rgba(167,216,255,.06); font-size: 12px; font-weight: 700; }
-    .result-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; margin-top: 16px; }
-    .result-panel { border: 1px solid var(--line); border-radius: 20px; padding: 24px; background: rgba(21,23,50,.72); }
-    .panel-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
-    .panel-heading h3 { margin: 0; font-size: 14px; font-weight: 700; }
-    .panel-heading span { color: var(--muted); font-size: 10px; }
-    .score-list { display: grid; gap: 12px; }
-    .score-row { display: grid; grid-template-columns: 45px minmax(80px,1fr) 28px; align-items: center; gap: 10px; color: #c3c1d8; font-size: 11px; }
-    .score-code { color: #e7e5f4; font-size: 10px; font-weight: 750; letter-spacing: 1.5px; }
-    .score-track { height: 7px; overflow: hidden; border-radius: 8px; background: rgba(255,255,255,.08); }
-    .score-bar { height: 100%; border-radius: inherit; background: linear-gradient(90deg, #91dfe9, #bba8ff 55%, #f6b6d2); }
-    .score-value { color: #b3b0ca; text-align: right; }
-    .score-row.is-leading .score-code, .score-row.is-leading .score-value { color: var(--pink); }
-    .career-groups { display: grid; gap: 16px; }
-    .career-group h4 { margin: 0 0 9px; color: var(--cyan); font-size: 11px; letter-spacing: 1.5px; }
-    .career-list { display: flex; flex-wrap: wrap; gap: 8px; }
-    .career { border: 1px solid rgba(146,232,244,.17); border-radius: 10px; padding: 8px 10px; color: #d2e8eb; background: rgba(146,232,244,.045); font-size: 11px; }
-    .career.featured { border-color: rgba(255,213,138,.39); color: #ffe2b5; background: rgba(255,213,138,.07); }
-    .study-line { margin: 20px 0 0; padding-top: 16px; border-top: 1px solid var(--line); color: #aaa9c2; font-size: 12px; line-height: 1.7; }
-    .study-line strong { color: var(--ink); font-weight: 650; }
-    .result-bottom { display: flex; flex-direction: column; align-items: center; gap: 16px; margin-top: 22px; }
-    .result-bottom p { margin: 0; color: #a9a7c0; font-size: 12px; }
-    .membership-cta { display: flex; width: 100%; flex-direction: column; align-items: center; justify-content: center; gap: 10px; border: 0; padding: 0; background: transparent; box-shadow: none; text-align: center; }
-    .membership-copy { max-width: 100%; line-height: 1.65; text-align: center; }
-    .membership-cta .primary-btn, .result-actions #restart-btn { width: min(100%, 340px); min-height: 48px; white-space: nowrap; }
-    .membership-cta .primary-btn { text-decoration: none; }
-    .result-actions { display: flex; width: min(100%, 340px); flex-wrap: wrap; justify-content: center; gap: 10px; margin-inline: auto; }
-
-    .screen-center { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; }
-    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
-
-    @media (max-width: 820px) {
-      .app-shell { width: min(100% - 38px, 620px); }
-      .district-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .district-card, .district-card:nth-child(4), .district-card:nth-child(5) { grid-column: auto; }
-      #district-screen > .screen-center { min-height: calc(100svh - 74px); }
-      .intro { min-height: initial; padding: 30px 0 50px; }
-      .scene-wrap { min-height: clamp(270px, 48vw, 340px); }
-      .image-slot { width: min(380px, 100%); }
-      .question-layout { grid-template-columns: 1fr; gap: 20px; }
-      .passport-options { grid-template-columns: 1fr; }
-      .passport-card { border-radius: 19px; }
-      .passport-pass-illustration { width: min(100%, 350px); margin: 14px auto 16px; }
-      .story-column { position: static; padding: 0; }
-      #question-screen.is-scene-intro .story-column { padding-top: 8px; }
-      #question-screen.is-first-question .question-card { margin-top: 16px; }
-      .story-column h2 { margin: 16px 0 8px; font-size: 37px; }
-      .story-column p { max-width: 600px; margin-bottom: 0; }
-      .story-star { display: none; }
-      .story-intro-screen { min-height: 100svh; padding: 30px 0; }
-      .result-grid { grid-template-columns: 1fr; }
-    }
-
-    @media (max-width: 520px) {
-      .app-shell { width: calc(100% - 30px - env(safe-area-inset-left) - env(safe-area-inset-right)); }
-      .intro { min-height: 100svh; justify-content: center; padding: 20px 0 max(12px, env(safe-area-inset-bottom)); }
-      .intro h1 { font-size: clamp(39px, 11vw, 58px); }
-      .scene-wrap { min-height: clamp(285px, 76vw, 340px); }
-      .image-slot { width: min(360px, 100%); }
-      .story-intro-screen { min-height: 100svh; padding: 20px 0 max(20px, env(safe-area-inset-bottom)); }
-      .story-intro-card { padding: 12px 0; }
-      .story-intro-card h2 { margin: 15px 0 18px; font-size: 39px; }
-      .story-intro-copy { font-size: 13px; line-height: 1.9; }
-      .story-intro-ending { font-size: 14px; }
-      .story-intro-actions { flex-direction: row; gap: 8px; margin-top: 22px; }
-      .progress-row { align-items: flex-start; flex-direction: column; gap: 10px; }
-      .progress-track { width: 100%; }
-      .quiz-screen { padding: 18px 0 max(20px, env(safe-area-inset-bottom)); }
-      #job-screen { min-height: calc(100svh - 36px); }
-      #question-screen.is-scene-intro { min-height: 100svh; }
-      #question-screen.is-first-question { min-height: 100svh; }
-      #question-screen.is-scene-question { min-height: 100svh; }
-      .question-layout { gap: 20px; }
-      #question-screen.is-scene-intro .question-layout { max-width: 100%; }
-      #question-screen.is-scene-intro .story-column { padding-top: 4px; }
-      #question-screen.is-first-question .question-layout { max-width: 100%; }
-      #question-screen.is-first-question .question-card { margin-top: 0; }
-      #question-screen.is-scene-question .question-layout { max-width: 100%; }
-      #question-screen.is-scene-question .question-card { margin-top: 0; }
-      .story-column h2 { margin: 12px 0 8px; font-size: 32px; }
-      .story-column p { font-size: 14px; line-height: 1.7; }
-      .window-illustration { width: min(100%, 540px); height: auto; margin-top: 16px; }
-      .fading-character-illustration { width: min(100%, 420px); margin-top: 16px; }
-      .packing-illustration { height: 190px; margin-top: 14px; }
-      .junction-illustration { width: min(100%, 550px); height: 265px; margin-top: 14px; }
-      .cliff-gate-illustration { height: 190px; margin-top: 14px; }
-      .explorer-friends-illustration { height: 180px; margin-top: 14px; }
-      .fork-road-illustration { height: 180px; margin-top: 14px; }
-      .festival-stage-illustration { height: 180px; margin-top: 14px; }
-      .restored-star-illustration { height: 180px; margin-top: 14px; }
-      .bridge-frame { margin-top: 14px; }
-      .question-card { border-radius: 19px; padding: 20px 16px; }
-      .question-card h3 { font-size: 17px; }
-      .question-hint { margin-bottom: 18px; font-size: 12px; }
-      .options { gap: 9px; }
-      .option { min-height: 58px; grid-template-columns: 1fr 15px; gap: 10px; padding: 8px 10px; }
-      .option-text { font-size: 11px; }
-      .quiz-footer { align-items: flex-end; margin-top: 16px; }
-      .quiz-footer .primary-btn { min-height: 44px; padding: 0 16px; font-size: 12px; }
-      .quiz-footer .back-btn { min-height: 44px; }
-      .foot-hint { max-width: 112px; text-align: right; }
-      .district-intro { margin: 0 auto 10px; }
-      .district-intro h2 { margin: 10px 0 6px; font-size: 32px; }
-      .district-intro p { font-size: 12px; }
-      .district-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
-      .district-card:last-child:nth-child(odd) { grid-column: 1 / -1; justify-self: center; width: calc((100% - 9px) / 2); }
-      .district-card { min-height: 150px; border-radius: 15px; padding: 12px; }
-      .district-code { display: block; padding-right: 35px; font-size: 9px; letter-spacing: 1.5px; }
-      .district-scene { height: clamp(56px, 15vw, 72px); margin: 8px 0 10px; border-radius: 9px; object-fit: contain; }
-      .district-card h3 { margin: 4px 0 5px; font-size: 18px; }
-      .district-card p { display: -webkit-box; overflow: hidden; font-size: 9px; line-height: 1.4; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
-      .result-screen { padding-top: 27px; }
-      .result-hero { border-radius: 20px; padding: 26px 20px; }
-      .result-panel { padding: 19px; }
-      .result-bottom { align-items: stretch; flex-direction: column; }
-      .result-actions { width: 100%; }
-      .result-actions button { flex: 0 1 min(100%, 340px); }
-    }
-
-    @media (max-width: 520px) and (max-height: 900px) {
-      .quiz-screen { padding: 12px 0 16px; }
-      .progress-row { margin-bottom: 16px; }
-      .quiz-constellation { height: 68px; }
-      .quiz-constellation span:nth-child(1) { top: 5px; }
-      .quiz-constellation span:nth-child(2) { top: 42px; }
-      .quiz-constellation span:nth-child(3) { top: 24px; }
-      .quiz-constellation span:nth-child(4) { top: 45px; }
-      .quiz-constellation span:nth-child(5) { top: 32px; }
-      .options { gap: 8px; }
-      .option { min-height: 54px; padding: 6px 9px; }
-      .quiz-footer { margin-top: 12px; }
-    }
-
-    /* Tablet and compact laptop layouts */
-    @media (max-width: 1024px) {
-      .question-layout { grid-template-columns: minmax(0, 1fr); align-items: stretch; gap: 20px; }
-      .story-column { position: relative; top: auto; }
-    }
-
-    /* Phone-first layout: single-column flow, touch-sized controls, safe-area spacing */
-    @media (max-width: 600px) {
-      html, body { width: 100%; max-width: 100%; overflow-x: clip; }
-      .app-shell { width: min(520px, calc(100% - max(24px, env(safe-area-inset-left) + env(safe-area-inset-right) + 20px))); }
-      .intro { min-height: 100svh; min-height: 100dvh; justify-content: center; gap: 0; padding: max(22px, env(safe-area-inset-top)) 0 max(18px, env(safe-area-inset-bottom)); }
-      .intro h1 { width: 100%; max-width: 14ch; margin-top: 0; font-size: clamp(36px, 10.4vw, 52px); line-height: 1.02; letter-spacing: 1.5px; }
-      .scene-wrap { width: 100%; min-height: clamp(220px, 64vw, 290px); margin: 4px 0 0; }
-      .image-slot { width: min(100%, 390px); }
-      .image-slot img { width: 205%; height: 135%; }
-      #start-btn { width: min(100%, 340px); min-height: 54px; margin-top: 8px; font-size: 16px; }
-      .fine-print { max-width: 100%; margin-top: 10px; font-size: clamp(9px, 2.5vw, 11px); line-height: 1.4; white-space: nowrap; }
-
-      .story-intro-screen { min-height: 100svh; min-height: 100dvh; align-items: flex-start; padding: max(58px, env(safe-area-inset-top) + 42px) 0 max(24px, env(safe-area-inset-bottom)); }
-      .story-intro-card { width: 100%; padding: 10px 0; }
-      .story-home-btn { top: -42px; left: 0; width: 44px; height: 44px; }
-      .story-intro-sky { width: min(300px, 100%); height: 54px; }
-      .story-intro-card .eyebrow { font-size: 9px; letter-spacing: 1.5px; }
-      .story-intro-card h2 { margin: 12px 0 16px; font-size: clamp(32px, 9vw, 42px); line-height: 1.2; }
-      .story-intro-copy { font-size: 14px; line-height: 1.8; text-align: left; }
-      .story-intro-copy p { margin-bottom: 12px; }
-      .story-intro-ending { font-size: 15px; }
-      .story-intro-actions { margin-top: 20px; }
-      .story-intro-actions .primary-btn { width: min(100%, 340px); min-height: 54px; font-size: 16px; }
-
-      .quiz-screen { min-height: 100svh; min-height: 100dvh; padding: max(14px, env(safe-area-inset-top)) 0 max(22px, env(safe-area-inset-bottom)); }
-      #question-screen.is-scene-intro, #question-screen.is-first-question, #question-screen.is-scene-question,
-      #job-screen { min-height: 100svh; min-height: 100dvh; }
-      .progress-row { align-items: stretch; gap: 9px; margin-bottom: 18px; }
-      .progress-info { min-width: 0; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
-      .progress-count { flex: 0 0 auto; font-size: 15px; }
-      .progress-caption { min-width: 0; font-size: 11px; line-height: 1.45; }
-      .progress-track { width: 100%; height: 5px; }
-      .question-layout { width: 100%; min-width: 0; gap: 14px; }
-      #question-screen.is-scene-intro .question-layout { min-height: 0; justify-content: flex-start; }
-      #question-screen.is-scene-intro .story-column { padding-top: 6px; }
-      #question-screen.is-first-question .question-layout,
-      #question-screen.is-scene-question .question-layout { min-height: 0; justify-content: flex-start; padding-top: clamp(18px, 5svh, 44px); }
-      .story-column { width: 100%; min-width: 0; padding: 0; }
-      .chapter-tag { max-width: 100%; justify-content: center; font-size: 10px; letter-spacing: 1.5px; line-height: 1.5; }
-      .story-column h2 { margin: 12px 0 8px; font-size: clamp(28px, 8vw, 38px); line-height: 1.2; overflow-wrap: anywhere; }
-      .story-column p { max-width: 100%; margin: 0; font-size: 14px; line-height: 1.75; overflow-wrap: anywhere; }
-      .shop-row-illustration { width: 100%; margin-top: 14px; }
-      .window-illustration { width: min(100%, 540px); height: auto; margin-top: 14px; }
-      .window-illustration img { width: 100%; height: auto; }
-      .fading-character-illustration { width: min(100%, 420px); margin-top: 14px; }
-      .packing-illustration, .junction-illustration, .cliff-gate-illustration,
-      .explorer-friends-illustration, .fork-road-illustration,
-      .festival-stage-illustration, .restored-star-illustration {
-        width: 100%; height: clamp(170px, 54vw, 230px); margin: 14px auto 0;
-      }
-      .bridge-frame { width: 100%; margin-top: 14px; }
-      .bridge-illustration { width: 170%; height: 170%; }
-      .scene-story-actions { width: 100%; gap: 8px; margin-top: 18px; }
-      .scene-story-actions .primary-btn { min-height: 50px; padding: 0 16px; font-size: 15px; }
-      .scene-story-actions .back-btn { flex: 0 0 44px; }
-      .question-card { width: 100%; min-width: 0; border-radius: 18px; padding: 18px 0; }
-      .question-card h3 { margin: 0 0 12px; font-size: clamp(19px, 5.5vw, 23px); line-height: 1.45; overflow-wrap: anywhere; }
-      .question-hint { margin-bottom: 14px; font-size: 13px; line-height: 1.6; }
-      .options { width: 100%; max-width: none; gap: 9px; }
-      .option { min-height: 58px; grid-template-columns: minmax(0, 1fr) 16px; gap: 10px; border-radius: 13px; padding: 11px 13px; }
-      .option-text { min-width: 0; font-size: 14px; line-height: 1.55; overflow-wrap: anywhere; }
-      .option:hover { transform: none; }
-      .question-card .back-btn { top: -48px; left: 0; }
-      #question-screen.is-scene-intro .story-column .back-btn { top: -42px; left: 0; }
-      .quiz-footer { flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 16px; }
-      .quiz-footer .primary-btn { min-height: 48px; font-size: 14px; }
-      .foot-hint { max-width: 42%; font-size: 11px; }
-
-      #district-screen > .screen-center { min-height: 0; justify-content: flex-start; padding-top: 8px; }
-      .district-intro { width: 100%; max-width: 100%; margin: 0 auto 18px; padding: 0 4px; }
-      #district-screen .district-intro .back-btn { top: -48px; left: 0; transform: none; }
-      .district-intro h2 { margin: 8px 0 6px; font-size: clamp(30px, 8vw, 38px); }
-      .district-intro p { font-size: 13px; line-height: 1.6; }
-      .district-list { width: 100%; grid-template-columns: minmax(0, 1fr); gap: 10px; }
-      .district-card, .district-card:nth-child(4), .district-card:nth-child(5),
-      .district-card:last-child:nth-child(odd) {
-        display: grid; width: 100%; min-height: 112px; grid-column: auto;
-        grid-template-columns: minmax(82px, 29%) minmax(0, 1fr); grid-template-rows: auto 1fr;
-        align-items: center; gap: 5px 12px; border-radius: 16px; padding: 12px;
-      }
-      .district-code { grid-column: 2; grid-row: 1; align-self: end; padding: 0; font-size: 10px; letter-spacing: 1.5px; }
-      .district-scene { width: 100%; height: auto; grid-column: 1; grid-row: 1 / span 2; align-self: center; aspect-ratio: 1.3; margin: 0; overflow: hidden; border-radius: 9px; }
-      .district-scene img { object-position: center; transform: scale(1.12) translateY(-11%); }
-      .district-card h3 { grid-column: 2; grid-row: 2; align-self: start; margin: 0; font-size: clamp(17px, 4.8vw, 21px); line-height: 1.35; overflow-wrap: anywhere; }
-      .district-card p { grid-column: 2; max-width: none; font-size: 11px; line-height: 1.45; }
-      .district-card:hover { transform: none; }
-
-      #job-screen .question-layout { min-height: 0; justify-content: flex-start; align-items: stretch; padding-top: clamp(18px, 5svh, 44px); }
-      #job-screen .question-card { max-width: none; padding: 18px 0; }
-      .job-prompt { margin-bottom: 16px; font-size: 15px; line-height: 1.7; }
-      #job-screen .question-card .back-btn { top: -48px; left: 0; }
-
-      #passport-screen { width: 100%; padding-bottom: max(12px, env(safe-area-inset-bottom)); }
-      .passport-card { border-radius: 18px; padding: 20px 15px; }
-      .passport-card > .back-btn { top: 8px; left: 8px; }
-      .passport-intro { margin-bottom: 20px; padding-top: 42px; }
-      .passport-intro .chapter-tag { max-width: 100%; font-size: 10px; letter-spacing: 1.5px; }
-      .passport-intro h2 { margin: 10px 0 8px; font-size: clamp(29px, 8vw, 36px); }
-      .passport-intro p { font-size: 14px; line-height: 1.7; }
-      .passport-pass-illustration { width: min(100%, 360px); margin: 14px auto 16px; }
-      .passport-form { gap: 16px; }
-      .passport-field { padding-top: 14px; }
-      .passport-field legend, .passport-label { margin-bottom: 8px; font-size: 15px; }
-      .passport-input, .passport-select { min-height: 48px; font-size: 16px; }
-      .passport-options { grid-template-columns: minmax(0, 1fr); gap: 8px; }
-      .passport-choice { min-height: 48px; font-size: 14px; }
-      .passport-hint { font-size: 12px; }
-      .passport-actions { margin-top: 10px; }
-      .passport-actions .primary-btn { width: min(100%, 340px); min-height: 52px; font-size: 15px; }
-
-      .result-screen { min-height: 100svh; min-height: 100dvh; padding: max(22px, env(safe-area-inset-top)) 0 max(26px, env(safe-area-inset-bottom)); }
-      .result-character-stage { min-height: 220px; gap: 4px; margin-bottom: 12px; }
-      .result-character-stage::before { width: 78vw; }
-      .result-character-art { height: clamp(180px, 55vw, 260px); }
-      .result-character-stage.is-mixed .result-character-art { height: clamp(165px, 48vw, 225px); }
-      .result-character-caption { max-width: 100%; margin-top: -5px; font-size: 9px; line-height: 1.45; }
-      .result-hero { border-radius: 18px; padding: 24px 17px; }
-      .result-branches { gap: 6px; }
-      .result-branch { padding: 8px 10px; font-size: 11px; }
-      .result-hero .eyebrow { justify-content: flex-start; font-size: 9px; letter-spacing: 1.5px; }
-      .result-hero h2 { margin: 14px 0 10px; font-size: clamp(34px, 9vw, 44px); line-height: 1.15; overflow-wrap: anywhere; }
-      .result-description { margin-bottom: 16px; font-size: 14px; line-height: 1.75; }
-      .result-meta { gap: 7px; }
-      .pill { max-width: 100%; padding: 7px 10px; font-size: 11px; overflow-wrap: anywhere; }
-      .result-grid { grid-template-columns: minmax(0, 1fr); margin-top: 12px; }
-      .result-panel { min-width: 0; border-radius: 16px; padding: 17px; }
-      .career-list { gap: 7px; }
-      .career { max-width: 100%; font-size: 12px; overflow-wrap: anywhere; }
-      .result-bottom { flex-direction: column; align-items: stretch; margin-top: 16px; }
-      .membership-cta { align-items: center; }
-      .membership-cta .primary-btn, .result-actions #restart-btn { width: min(100%, 340px); }
-      .result-actions { width: 100%; }
-      .result-actions #restart-btn { width: min(100%, 340px); }
-      .result-actions button { min-height: 48px; font-size: 15px; }
-    }
-
-    @media (max-width: 380px) {
-      .app-shell { width: calc(100% - max(22px, env(safe-area-inset-left) + env(safe-area-inset-right) + 16px)); }
-      .intro h1 { font-size: clamp(34px, 10vw, 39px); }
-      .chapter-tag { font-size: 9px; }
-      .option { padding-inline: 11px; }
-      .option-text { font-size: 13px; }
-      .district-card, .district-card:nth-child(4), .district-card:nth-child(5),
-      .district-card:last-child:nth-child(odd) { grid-template-columns: minmax(72px, 27%) minmax(0, 1fr); gap: 5px 9px; padding: 10px; }
-      .district-card h3 { font-size: 16px; }
-    }
-
-    /* Compact, balanced phone rhythm. Screens keep intrinsic height and scroll when content needs it. */
-    @media (max-width: 600px) {
-      main { min-height: 0; }
-      .intro, .story-intro-screen, .quiz-screen, #job-screen,
-      #question-screen.is-scene-intro, #question-screen.is-first-question,
-      #question-screen.is-scene-question, .result-screen { min-height: 100svh; min-height: 100dvh; }
-      #question-screen.is-scene-intro .question-layout,
-      #question-screen.is-first-question .question-layout,
-      #question-screen.is-scene-question .question-layout,
-      #job-screen .question-layout { flex: 1 0 auto; justify-content: center; }
-      .intro { padding-block: max(14px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-bottom)); }
-      .scene-wrap { min-height: clamp(185px, 50vw, 230px); margin-top: 0; }
-
-      .story-intro-screen { align-items: safe center; padding-top: max(58px, env(safe-area-inset-top) + 42px); padding-bottom: max(20px, env(safe-area-inset-bottom)); }
-      .story-intro-card { padding: 4px 0; }
-      .story-intro-sky { height: 44px; }
-      .story-intro-card h2 { margin: 8px 0 10px; line-height: 1.12; }
-      .story-intro-copy { font-size: 14px; line-height: 1.62; }
-      .story-intro-copy p { margin-bottom: 8px; }
-      .story-intro-ending { margin-top: 4px; font-size: 14px; }
-      .story-intro-actions { margin-top: 12px; }
-
-      .quiz-screen { padding-top: max(10px, env(safe-area-inset-top)); padding-bottom: max(16px, env(safe-area-inset-bottom)); }
-      .progress-row { margin-bottom: 12px; }
-      .question-layout { gap: 10px; }
-      #question-screen.is-first-question .question-layout,
-      #question-screen.is-scene-question .question-layout {
-        justify-content: safe center;
-        padding-top: clamp(12px, 3svh, 26px);
-      }
-      #question-screen.is-first-question .question-card h3,
-      #question-screen.is-scene-question .question-card h3 { text-align: center; }
-      #question-screen.is-first-question .option-text,
-      #question-screen.is-scene-question .option-text { text-align: center; }
-      #job-screen .question-layout { padding: clamp(56px, 7svh, 66px) 0 clamp(18px, 3svh, 28px); }
-      #job-screen .job-prompt,
-      #job-screen #job-options { position: relative; top: clamp(180px, 28dvh, 205px); }
-      #job-screen .question-card .back-btn { top: calc(clamp(88px, 14dvh, 100px) + 60px); }
-      #question-screen.is-scene-intro .question-layout { justify-content: center; }
-      #question-screen.is-scene-intro .story-column { padding-top: 2px; }
-      .story-column h2 { margin: 8px 0 6px; }
-      .story-column p { line-height: 1.6; }
-      .shop-row-illustration, .window-illustration, .fading-character-illustration,
-      .packing-illustration, .junction-illustration, .cliff-gate-illustration,
-      .explorer-friends-illustration, .fork-road-illustration,
-      .festival-stage-illustration, .restored-star-illustration, .bridge-frame { margin-top: 10px; }
-      .packing-illustration, .junction-illustration, .cliff-gate-illustration,
-      .explorer-friends-illustration, .fork-road-illustration,
-      .festival-stage-illustration, .restored-star-illustration { height: clamp(150px, 42vw, 185px); }
-      .bridge-frame { width: 100%; }
-      .bridge-illustration { width: 170%; height: 170%; }
-      .scene-story-actions { margin-top: 12px; }
-      .question-card { padding-block: 14px; }
-      .question-card h3 { margin-bottom: 9px; }
-      .question-hint { margin-bottom: 10px; }
-      .options { gap: 7px; }
-      .option { min-height: 54px; padding-block: 9px; }
-      .quiz-footer { margin-top: 12px; }
-
-      #district-screen > .screen-center { min-height: calc(100dvh - 90px); justify-content: safe center; padding-top: 4px; }
-      .district-intro { margin-bottom: 12px; }
-      .district-list { gap: 8px; }
-      .district-card, .district-card:nth-child(4), .district-card:nth-child(5),
-      .district-card:last-child:nth-child(odd) { min-height: 98px; padding: 10px; }
-      #job-screen .question-card { padding-block: 14px; }
-      .job-prompt { margin-bottom: 12px; line-height: 1.6; }
-
-      .passport-card { padding: 16px 12px; }
-      .passport-intro { margin-bottom: 14px; padding-top: 36px; }
-      .passport-pass-illustration { margin-block: 10px 12px; }
-      .passport-form { gap: 12px; }
-      .passport-field { padding-top: 10px; }
-
-      .result-screen { flex-direction: column; justify-content: safe center; padding-top: max(16px, env(safe-area-inset-top)); padding-bottom: max(20px, env(safe-area-inset-bottom)); }
-      .result-screen.active { display: flex; }
-      .result-character-stage { min-height: 205px; }
-      .result-hero { padding: 18px 14px; }
-      .result-hero h2 { margin: 10px 0 8px; }
-      .result-description { margin-bottom: 12px; line-height: 1.6; }
-      .result-grid { margin-top: 10px; }
-      .result-panel { padding: 14px; }
-      .result-bottom { margin-top: 12px; }
-    }
-
-    @media (orientation: landscape) and (max-height: 600px) and (max-width: 1024px) {
-      .intro { min-height: 0; padding-block: 14px; }
-      .scene-wrap { min-height: 220px; }
-      .image-slot { width: min(300px, 56vw); }
-      .story-intro-screen { min-height: 0; align-items: flex-start; padding-block: 28px; }
-      #question-screen.is-scene-intro .question-layout,
-      #question-screen.is-first-question .question-layout,
-      #question-screen.is-scene-question .question-layout,
-      #job-screen .question-layout { justify-content: flex-start; }
-      #district-screen > .screen-center { min-height: 0; }
-    }
-
-    /* Keep phone content inside the live viewport and leave a clear row for back controls. */
-    @media (max-width: 600px) {
-      html, body { min-height: 100%; }
-      body, main { min-height: 100vh; min-height: 100dvh; }
-      .sky, .sky-art { height: 100vh; height: 100dvh; }
-
-      .quiz-screen {
-        min-height: 100vh;
-        min-height: 100dvh;
-        padding-top: calc(env(safe-area-inset-top) + 58px);
-        padding-bottom: max(16px, env(safe-area-inset-bottom));
-      }
-      .quiz-screen .back-btn { top: calc(env(safe-area-inset-top) + 8px); }
-      .question-card .back-btn,
-      #question-screen.is-scene-intro .story-column .back-btn,
-      #district-screen .district-intro .back-btn,
-      #job-screen .question-card .back-btn { top: 0; }
-      .question-card { padding-top: 58px; }
-      #question-screen.is-scene-intro .story-column { padding-top: 58px; }
-      #district-screen > .screen-center { min-height: 0; }
-      #district-screen .district-intro { padding-top: 52px; }
-      #district-screen .district-intro .back-btn { left: 0; }
-      #job-screen .question-layout { padding-top: 0; }
-      #job-screen .job-prompt, #job-screen #job-options { top: 0; }
-
-      .intro, .story-intro-screen, .result-screen {
-        min-height: 100vh;
-        min-height: 100dvh;
-        padding-bottom: max(18px, env(safe-area-inset-bottom));
-      }
-      .story-intro-screen { padding-top: max(58px, calc(env(safe-area-inset-top) + 42px)); }
-      .story-home-btn { top: max(0px, env(safe-area-inset-top)); }
-      #passport-screen { padding-top: calc(env(safe-area-inset-top) + 58px); }
-      #passport-screen .progress-row { margin-bottom: 12px; }
-      #passport-screen .passport-card { padding-top: 58px; }
-      #passport-screen .passport-card > .back-btn { top: 8px; }
-
-      /* Keep the long scene question scrollable past its last choice. */
-      #question-screen.is-scene-question { padding-bottom: max(88px, calc(env(safe-area-inset-bottom) + 72px)); }
-      #job-screen .question-layout {
-        justify-content: safe center;
-        padding-top: 0;
-      }
-      #job-screen .question-card {
-        top: clamp(150px, 15svh, 190px);
-        padding-top: 58px;
-      }
-
-      /* Center the district choices when they fit; allow the screen to grow when they do not. */
-      #district-screen > .screen-center {
-        flex: 1 0 auto;
-        min-height: calc(100dvh - 150px);
-        justify-content: safe center;
-        padding-top: 0;
-        padding-bottom: max(16px, env(safe-area-inset-bottom));
-      }
-      #district-screen .district-intro .back-btn { top: 0; left: 0; }
-    }
-
-    /* Keep only the opening screen within the live viewport. */
-    #intro-screen .intro {
-      height: 100vh;
-      height: 100svh;
-      height: 100dvh;
-      min-height: 100dvh;
-      justify-content: center;
-      padding-block: max(clamp(12px, 3svh, 30px), env(safe-area-inset-top))
-        max(clamp(12px, 5svh, 54px), env(safe-area-inset-bottom));
-    }
-    #intro-screen .intro h1 { max-width: 100%; margin-top: clamp(4px, 1.5svh, 12px); }
-    #intro-screen .intro .scene-wrap {
-      flex: 0 1 auto;
-      width: min(600px, 58svh, 100%);
-      min-height: 0;
-      margin: 0;
-    }
-    #intro-screen .intro .image-slot { width: 100%; max-width: 600px; }
-    #intro-screen #start-btn { margin-top: clamp(8px, 3svh, 24px); }
-    #intro-screen .fine-print { margin-top: clamp(4px, 1.5svh, 12px); }
-
-    @media (max-width: 600px) {
-      #intro-screen .intro .scene-wrap { width: min(100%, 58svh); }
-      #intro-screen .intro h1 { font-size: clamp(22px, 7.2vw, 44px); }
-    }
-
-    @media (max-height: 520px) {
-      #intro-screen .intro {
-        padding-block: max(8px, env(safe-area-inset-top))
-          max(8px, env(safe-area-inset-bottom));
-      }
-      #intro-screen .intro .scene-wrap { width: min(100%, 48svh); }
-      #intro-screen .intro h1 { font-size: clamp(22px, 7.2vw, 44px); }
-      #intro-screen #start-btn { min-height: 48px; margin-top: clamp(4px, 2svh, 8px); }
-    }
-
-    @media (max-height: 420px) {
-      #intro-screen .intro .scene-wrap { width: min(100%, 42svh); }
-      #intro-screen .intro h1 { font-size: clamp(20px, 6.5vw, 40px); }
-      #intro-screen #start-btn { min-height: 44px; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
-    }
-  </style>
 </head>
+
 <body>
   <div class="sky" aria-hidden="true">
     <svg class="sky-art" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice">
       <defs>
         <linearGradient id="evening-sky" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#1a1a1a"/>
-          <stop offset=".48" stop-color="#292532"/>
-          <stop offset=".76" stop-color="#554653"/>
-          <stop offset="1" stop-color="#1a1a1a"/>
+          <stop offset="0" stop-color="#1a1a1a" />
+          <stop offset=".48" stop-color="#292532" />
+          <stop offset=".76" stop-color="#554653" />
+          <stop offset="1" stop-color="#1a1a1a" />
         </linearGradient>
         <radialGradient id="sunset-glow" cx="21%" cy="66%" r="62%">
-          <stop offset="0" stop-color="#f7a7b5" stop-opacity=".62"/>
-          <stop offset=".28" stop-color="#b6a3ff" stop-opacity=".34"/>
-          <stop offset=".62" stop-color="#6b6f7c" stop-opacity=".17"/>
-          <stop offset="1" stop-color="#1a1a1a" stop-opacity="0"/>
+          <stop offset="0" stop-color="#f7a7b5" stop-opacity=".62" />
+          <stop offset=".28" stop-color="#b6a3ff" stop-opacity=".34" />
+          <stop offset=".62" stop-color="#6b6f7c" stop-opacity=".17" />
+          <stop offset="1" stop-color="#1a1a1a" stop-opacity="0" />
         </radialGradient>
         <linearGradient id="cloud-shadow" x1="0" y1="0" x2=".8" y2="1">
-          <stop offset="0" stop-color="#6b6f7c"/>
-          <stop offset=".42" stop-color="#34333d"/>
-          <stop offset="1" stop-color="#1a1a1a"/>
+          <stop offset="0" stop-color="#6b6f7c" />
+          <stop offset=".42" stop-color="#34333d" />
+          <stop offset="1" stop-color="#1a1a1a" />
         </linearGradient>
         <linearGradient id="cloud-edge" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#f7a7b5" stop-opacity=".48"/>
-          <stop offset=".5" stop-color="#b6a3ff" stop-opacity=".24"/>
-          <stop offset="1" stop-color="#6b6f7c" stop-opacity="0"/>
+          <stop offset="0" stop-color="#f7a7b5" stop-opacity=".48" />
+          <stop offset=".5" stop-color="#b6a3ff" stop-opacity=".24" />
+          <stop offset="1" stop-color="#6b6f7c" stop-opacity="0" />
         </linearGradient>
         <linearGradient id="meteor-trail-bg" x1="0" y1="1" x2="1" y2="0">
-          <stop offset="0" stop-color="#b6a3ff" stop-opacity="0"/>
-          <stop offset=".58" stop-color="#f7a7b5" stop-opacity=".45"/>
-          <stop offset="1" stop-color="#f5f5f5" stop-opacity=".95"/>
+          <stop offset="0" stop-color="#b6a3ff" stop-opacity="0" />
+          <stop offset=".58" stop-color="#f7a7b5" stop-opacity=".45" />
+          <stop offset="1" stop-color="#f5f5f5" stop-opacity=".95" />
         </linearGradient>
         <radialGradient id="meteor-glow-bg">
-          <stop offset="0" stop-color="#f5f5f5"/>
-          <stop offset=".24" stop-color="#f7a7b5" stop-opacity=".75"/>
-          <stop offset="1" stop-color="#f7a7b5" stop-opacity="0"/>
+          <stop offset="0" stop-color="#f5f5f5" />
+          <stop offset=".24" stop-color="#f7a7b5" stop-opacity=".75" />
+          <stop offset="1" stop-color="#f7a7b5" stop-opacity="0" />
         </radialGradient>
       </defs>
-      <path fill="url(#evening-sky)" d="M0 0h1600v1000H0z"/>
-      <path fill="url(#sunset-glow)" d="M0 0h1600v1000H0z"/>
+      <path fill="url(#evening-sky)" d="M0 0h1600v1000H0z" />
+      <path fill="url(#sunset-glow)" d="M0 0h1600v1000H0z" />
       <g transform="translate(0 105)">
-        <path fill="#6b6f7c" opacity=".17" d="M0 584l62-16 47 5 39-12 58 4 39-15 51 9 44-16 41 8 34-12 46 11 45-14 40 8 43-12 57 9 35-8 52 16 41-5 39 15 48-5v120H0z"/>
-        <path fill="url(#cloud-edge)" opacity=".39" d="M0 623l57-20 41 8 52-14 44 12 41-22 39 6 50-22 42 15 35-12 47 19 52-18 39 17 51-12 34 14 57-12 42 10 54-13 43 14 48-7 45 15v113H0z"/>
-        <path fill="url(#cloud-shadow)" opacity=".63" d="M814 548l41-24 28 5 37-34 32 10 35-19 31 15 32-35 37 6 28-23 37 7 28-20 31 9 35-12 30 18 42-7 25 24 33 4 25 33 44 11 28 40-48 21-39-5-42 21-55-3-34 19-47-10-37 18-51-7-36 20-46-11-34 13-38-10-40 10-29-12-47 7-25-18-42 6-34-23-50 9-40-18 14-50 43-17z"/>
-        <path fill="#6b6f7c" opacity=".25" d="M929 625l45-17 32 9 44-19 36 14 38-18 38 14 45-17 35 15 34-12 42 21 51-7 43 23 48-4 35 25-42 17-44-8-43 19-50-8-38 16-45-11-44 12-36-14-42 12-34-18-42 8-40-19-40 5-43-23z"/>
-        <path fill="url(#cloud-edge)" opacity=".2" d="M36 670l46-13 31 6 39-13 34 8 45-17 33 11 45-14 38 12 48-8 32 17 39-5 42 18 41-8 43 16 45-3 32 12-38 15-46-4-42 14-42-9-44 11-42-14-43 6-40-15-40 8-39-17-44 7-36-14-42 3z"/>
+        <path fill="#6b6f7c" opacity=".17"
+          d="M0 584l62-16 47 5 39-12 58 4 39-15 51 9 44-16 41 8 34-12 46 11 45-14 40 8 43-12 57 9 35-8 52 16 41-5 39 15 48-5v120H0z" />
+        <path fill="url(#cloud-edge)" opacity=".39"
+          d="M0 623l57-20 41 8 52-14 44 12 41-22 39 6 50-22 42 15 35-12 47 19 52-18 39 17 51-12 34 14 57-12 42 10 54-13 43 14 48-7 45 15v113H0z" />
+        <path fill="url(#cloud-shadow)" opacity=".63"
+          d="M814 548l41-24 28 5 37-34 32 10 35-19 31 15 32-35 37 6 28-23 37 7 28-20 31 9 35-12 30 18 42-7 25 24 33 4 25 33 44 11 28 40-48 21-39-5-42 21-55-3-34 19-47-10-37 18-51-7-36 20-46-11-34 13-38-10-40 10-29-12-47 7-25-18-42 6-34-23-50 9-40-18 14-50 43-17z" />
+        <path fill="#6b6f7c" opacity=".25"
+          d="M929 625l45-17 32 9 44-19 36 14 38-18 38 14 45-17 35 15 34-12 42 21 51-7 43 23 48-4 35 25-42 17-44-8-43 19-50-8-38 16-45-11-44 12-36-14-42 12-34-18-42 8-40-19-40 5-43-23z" />
+        <path fill="url(#cloud-edge)" opacity=".2"
+          d="M36 670l46-13 31 6 39-13 34 8 45-17 33 11 45-14 38 12 48-8 32 17 39-5 42 18 41-8 43 16 45-3 32 12-38 15-46-4-42 14-42-9-44 11-42-14-43 6-40-15-40 8-39-17-44 7-36-14-42 3z" />
       </g>
-      <path d="M940 305 1115 220" fill="none" stroke="url(#meteor-trail-bg)" stroke-width="5" stroke-linecap="round"/>
-      <ellipse cx="1115" cy="220" rx="18" ry="18" fill="url(#meteor-glow-bg)"/>
-      <path d="m1115 210 3 7 7 3-7 3-3 7-3-7-7-3 7-3z" fill="#f5f5f5"/>
-      <path fill="#1a1a1a" opacity=".76" d="M0 748c118-38 186 20 303-8 101-25 164 20 263-1 92-19 152 26 249 0 94-26 174 23 276-2 99-24 174 27 271-3 83-25 150 8 238-20v286H0z"/>
-      <path fill="#1a1a1a" d="M0 856l145-24 113 12 112-19 138 18 116-21 143 16 119-25 128 17 114-20 118 15 114-22v197H0z"/>
-      <path fill="none" stroke="#f7a7b5" stroke-opacity=".23" stroke-width="2" d="M0 856l145-24 113 12 112-19 138 18 116-21 143 16 119-25 128 17 114-20 118 15 114-22"/>
+      <path d="M940 305 1115 220" fill="none" stroke="url(#meteor-trail-bg)" stroke-width="5" stroke-linecap="round" />
+      <ellipse cx="1115" cy="220" rx="18" ry="18" fill="url(#meteor-glow-bg)" />
+      <path d="m1115 210 3 7 7 3-7 3-3 7-3-7-7-3 7-3z" fill="#f5f5f5" />
+      <path fill="#1a1a1a" opacity=".76"
+        d="M0 748c118-38 186 20 303-8 101-25 164 20 263-1 92-19 152 26 249 0 94-26 174 23 276-2 99-24 174 27 271-3 83-25 150 8 238-20v286H0z" />
+      <path fill="#1a1a1a"
+        d="M0 856l145-24 113 12 112-19 138 18 116-21 143 16 119-25 128 17 114-20 118 15 114-22v197H0z" />
+      <path fill="none" stroke="#f7a7b5" stroke-opacity=".23" stroke-width="2"
+        d="M0 856l145-24 113 12 112-19 138 18 116-21 143 16 119-25 128 17 114-20 118 15 114-22" />
     </svg>
     <div class="stars"></div>
   </div>
@@ -1169,15 +95,18 @@
       <section class="screen" id="story-screen" aria-labelledby="story-intro-title">
         <div class="story-intro-screen">
           <article class="story-intro-card">
-            <button class="story-home-btn" id="story-home-btn" type="button" aria-label="กลับหน้าแรก" title="กลับหน้าแรก">←</button>
+            <button class="story-home-btn" id="story-home-btn" type="button" aria-label="กลับหน้าแรก"
+              title="กลับหน้าแรก">←</button>
             <div class="story-intro-sky" aria-hidden="true"><span>✦</span><span>✦</span><span>✦</span></div>
             <div class="eyebrow">the last night before the colors fade</div>
             <h2 id="story-intro-title">ก่อนออกเดินทาง</h2>
             <div class="story-intro-copy">
               <p>คืนนี้สีสันของ Imagine City กำลังจะหายไปทั้งเมือง และมีเธอเป็นคนเดียวที่ช่วยได้</p>
-              <p>Imagine City เคยเป็นเมืองที่เต็มไปด้วยภาพวาด ป้ายไฟ เสียงเพลง และเกมที่ใครก็เล่นได้ แต่ตอนนี้ทุกอย่างซีดเป็นสีเทา</p>
+              <p>Imagine City เคยเป็นเมืองที่เต็มไปด้วยภาพวาด ป้ายไฟ เสียงเพลง และเกมที่ใครก็เล่นได้
+                แต่ตอนนี้ทุกอย่างซีดเป็นสีเทา</p>
               <p><strong>เหลือเวลาอีกแค่คืนเดียว ก่อนที่สีจะหายไปตลอดกาล</strong></p>
-              <p class="story-intro-ending">ถ้ามีใครขึ้นเวทีในเทศกาล Imagine Design Event แล้วทำให้คนทั้งเมืองกลับมายิ้มได้ สีทั้งหมดก็จะกลับมา</p>
+              <p class="story-intro-ending">ถ้ามีใครขึ้นเวทีในเทศกาล Imagine Design Event
+                แล้วทำให้คนทั้งเมืองกลับมายิ้มได้ สีทั้งหมดก็จะกลับมา</p>
             </div>
             <div class="story-intro-actions">
               <button class="primary-btn" id="story-start-btn" type="button">เริ่มสำรวจ</button>
@@ -1188,68 +117,93 @@
 
       <section class="screen quiz-screen" id="question-screen" aria-live="polite">
         <div class="progress-row">
-          <div class="progress-info"><span class="progress-count" id="progress-count"></span><span class="progress-caption">ภารกิจตามหาสีที่หายไป</span></div>
-          <div class="progress-track" role="progressbar" aria-label="ความคืบหน้าของควิซ" aria-valuemin="0" aria-valuemax="11" id="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+          <div class="progress-info"><span class="progress-count" id="progress-count"></span><span
+              class="progress-caption">ภารกิจตามหาสีที่หายไป</span></div>
+          <div class="progress-track" role="progressbar" aria-label="ความคืบหน้าของควิซ" aria-valuemin="0"
+            aria-valuemax="11" id="progress-track">
+            <div class="progress-fill" id="progress-fill"></div>
+          </div>
         </div>
         <div class="question-layout">
           <aside class="story-column">
             <div class="chapter-tag" id="chapter-tag"></div>
             <h2 id="story-title"></h2>
             <p id="story-copy"></p>
-            <img class="shop-row-illustration" id="shop-row-illustration" src="assets/6.png.webp" alt="ภาพแถวร้านค้าเก่าในย่านเงียบ มีร้านปิดและร้านที่ยังเปิดไฟ" hidden>
-            <figure class="window-illustration" id="story-illustration" role="img" aria-label="ภาพหน้าต่างมองออกไปเห็นดวงจันทร์และดวงดาวยามค่ำคืน" hidden>
+            <img class="shop-row-illustration" id="shop-row-illustration" src="assets/6.png.webp"
+              alt="ภาพแถวร้านค้าเก่าในย่านเงียบ มีร้านปิดและร้านที่ยังเปิดไฟ" hidden>
+            <figure class="window-illustration" id="story-illustration" role="img"
+              aria-label="ภาพหน้าต่างมองออกไปเห็นดวงจันทร์และดวงดาวยามค่ำคืน" hidden>
               <img src="assets/1.1.png.webp" alt="ภาพเมืองยามค่ำคืนมองผ่านหน้าต่าง มีดวงจันทร์ ดวงดาว และบ้านเรือน">
             </figure>
-            <figure class="fading-character-illustration" id="fading-character-illustration" role="img" aria-label="ภาพเด็กน้อยวาดภาพอยู่บนกระดาษยามค่ำคืน">
+            <figure class="fading-character-illustration" id="fading-character-illustration" role="img"
+              aria-label="ภาพเด็กน้อยวาดภาพอยู่บนกระดาษยามค่ำคืน">
               <img src="assets/5.png.webp" alt="ภาพเด็กน้อยกำลังวาดภาพสีสันสดใสบนกระดาษ">
             </figure>
-            <figure class="packing-illustration" id="packing-illustration" role="img" aria-label="แสงจากหน้าต่างยามค่ำคืนส่องไปยังกระเป๋า มีสมุดสเก็ตช์ ชุดสีกับอักษรวิเศษ ตลับเกมเก่า กล้องฟิล์ม และไมโครโฟน" hidden>
+            <figure class="packing-illustration" id="packing-illustration" role="img"
+              aria-label="แสงจากหน้าต่างยามค่ำคืนส่องไปยังกระเป๋า มีสมุดสเก็ตช์ ชุดสีกับอักษรวิเศษ ตลับเกมเก่า กล้องฟิล์ม และไมโครโฟน"
+              hidden>
               <img src="assets/2.png.webp" alt="ภาพหน้าต่างยามค่ำคืนและกระเป๋าพร้อมสิ่งของสำหรับเดินทาง">
             </figure>
-            <figure class="junction-illustration" id="junction-illustration" role="img" aria-label="เสาป้ายบอกทางห้าป้ายชี้ไปคนละทิศทางในยามค่ำคืน">
+            <figure class="junction-illustration" id="junction-illustration" role="img"
+              aria-label="เสาป้ายบอกทางห้าป้ายชี้ไปคนละทิศทางในยามค่ำคืน">
               <img src="assets/3.png.webp" alt="ภาพป้ายบอกทางหลากสีชี้ไปคนละทิศทางในยามค่ำคืน">
             </figure>
-            <figure class="cliff-gate-illustration" id="cliff-gate-illustration" role="img" aria-label="ทางเดินทอดไปยังประตูหินเรืองแสงริมผา">
+            <figure class="cliff-gate-illustration" id="cliff-gate-illustration" role="img"
+              aria-label="ทางเดินทอดไปยังประตูหินเรืองแสงริมผา">
               <img src="assets/7.png.webp" alt="ภาพทางเดินบนหน้าผามุ่งสู่ประตูหินเรืองแสงยามค่ำคืน">
             </figure>
-            <figure class="explorer-friends-illustration" id="explorer-friends-illustration" role="img" aria-label="นักสำรวจยืนอยู่ท่ามกลางเพื่อนร่วมทาง">
+            <figure class="explorer-friends-illustration" id="explorer-friends-illustration" role="img"
+              aria-label="นักสำรวจยืนอยู่ท่ามกลางเพื่อนร่วมทาง">
               <img src="assets/8.png.webp" alt="ภาพนักสำรวจและเพื่อนร่วมทางยามค่ำคืน">
             </figure>
-            <figure class="fork-road-illustration" id="fork-road-illustration" role="img" aria-label="ทางแยกสองเส้นทางในยามค่ำคืน">
+            <figure class="fork-road-illustration" id="fork-road-illustration" role="img"
+              aria-label="ทางแยกสองเส้นทางในยามค่ำคืน">
               <img src="assets/9.png.webp" alt="ภาพทางแยกสองทางพร้อมประตูและเครื่องหมายคำถาม">
             </figure>
-            <figure class="festival-stage-illustration" id="festival-stage-illustration" role="img" aria-label="เวทีว่างในความมืด มีแสงสปอตไลต์ส่องลงตรงกลางเวที">
+            <figure class="festival-stage-illustration" id="festival-stage-illustration" role="img"
+              aria-label="เวทีว่างในความมืด มีแสงสปอตไลต์ส่องลงตรงกลางเวที">
               <img src="assets/10.png.webp" alt="ภาพเวทีว่างที่มีแสงสปอตไลต์ส่องลงตรงกลาง">
             </figure>
-            <figure class="restored-star-illustration" id="restored-star-illustration" role="img" aria-label="นักสำรวจยื่นมือแตะดวงดาวเรืองแสงเหนือเมืองที่กลับมามีสีสัน">
+            <figure class="restored-star-illustration" id="restored-star-illustration" role="img"
+              aria-label="นักสำรวจยื่นมือแตะดวงดาวเรืองแสงเหนือเมืองที่กลับมามีสีสัน">
               <img src="assets/11.png.webp" alt="ภาพนักสำรวจแตะดวงดาวเรืองแสงเหนือเมืองที่มีสีสัน">
             </figure>
             <div class="bridge-frame" id="bridge-frame" hidden>
-              <img class="bridge-illustration" id="bridge-illustration" src="assets/4.png.webp" alt="ภาพสะพานข้ามแม่น้ำที่พังตรงกลาง ท่ามกลางท้องฟ้ายามค่ำคืน">
+              <img class="bridge-illustration" id="bridge-illustration" src="assets/4.png.webp"
+                alt="ภาพสะพานข้ามแม่น้ำที่พังตรงกลาง ท่ามกลางท้องฟ้ายามค่ำคืน">
             </div>
             <div class="scene-story-actions" id="scene-story-actions" hidden>
-              <button class="back-btn" id="scene-story-back-btn" type="button" aria-label="ย้อนกลับ" title="ย้อนกลับ"><span aria-hidden="true">←</span></button>
+              <button class="back-btn" id="scene-story-back-btn" type="button" aria-label="ย้อนกลับ"
+                title="ย้อนกลับ"><span aria-hidden="true">←</span></button>
               <button class="primary-btn" id="scene-question-btn" type="button">เริ่มสำรวจ</button>
             </div>
             <div class="story-star" aria-hidden="true">✦</div>
           </aside>
           <div class="question-card">
             <h3 id="question-title"></h3>
-            <div class="quiz-constellation" aria-hidden="true"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+            <div class="quiz-constellation" aria-hidden="true">
+              <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+            </div>
             <div class="options" id="options"></div>
-            <button class="back-btn" id="back-btn" type="button" aria-label="ย้อนกลับ" title="ย้อนกลับ"><span aria-hidden="true">←</span></button>
+            <button class="back-btn" id="back-btn" type="button" aria-label="ย้อนกลับ" title="ย้อนกลับ"><span
+                aria-hidden="true">←</span></button>
           </div>
         </div>
       </section>
 
       <section class="screen quiz-screen" id="district-screen" aria-live="polite">
         <div class="progress-row">
-          <div class="progress-info"><span class="progress-count">06 / 11</span><span class="progress-caption">คุณเริ่มเห็นตัวเองชัดขึ้นแล้ว</span></div>
-          <div class="progress-track" role="progressbar" aria-label="ความคืบหน้าของควิซ" aria-valuemin="0" aria-valuemax="11" aria-valuenow="6"><div class="progress-fill" style="width:54.5%"></div></div>
+          <div class="progress-info"><span class="progress-count">06 / 11</span><span
+              class="progress-caption">คุณเริ่มเห็นตัวเองชัดขึ้นแล้ว</span></div>
+          <div class="progress-track" role="progressbar" aria-label="ความคืบหน้าของควิซ" aria-valuemin="0"
+            aria-valuemax="11" aria-valuenow="6">
+            <div class="progress-fill" style="width:54.5%"></div>
+          </div>
         </div>
         <div class="screen-center">
           <div class="district-intro">
-            <button class="back-btn" id="district-back-btn" type="button" aria-label="ย้อนกลับ" title="ย้อนกลับ"><span aria-hidden="true">←</span></button>
+            <button class="back-btn" id="district-back-btn" type="button" aria-label="ย้อนกลับ" title="ย้อนกลับ"><span
+                aria-hidden="true">←</span></button>
             <h2 id="district-title">ย่านที่เรียกหาคุณ</h2>
             <p id="district-copy">ดวงไฟพาเธอเดินเข้าไปในย่านที่ใกล้ตัวเธอที่สุด เลือกได้หนึ่งย่าน</p>
           </div>
@@ -1259,91 +213,123 @@
 
       <section class="screen quiz-screen" id="job-screen" aria-live="polite">
         <div class="progress-row">
-          <div class="progress-info"><span class="progress-count">06 / 11</span><span class="progress-caption">สำรวจความฝันในย่านของคุณ</span></div>
-          <div class="progress-track" role="progressbar" aria-label="ความคืบหน้าของควิซ" aria-valuemin="0" aria-valuemax="11" aria-valuenow="6"><div class="progress-fill" style="width:54.5%"></div></div>
+          <div class="progress-info"><span class="progress-count">06 / 11</span><span
+              class="progress-caption">สำรวจความฝันในย่านของคุณ</span></div>
+          <div class="progress-track" role="progressbar" aria-label="ความคืบหน้าของควิซ" aria-valuemin="0"
+            aria-valuemax="11" aria-valuenow="6">
+            <div class="progress-fill" style="width:54.5%"></div>
+          </div>
         </div>
         <div class="question-layout">
           <div class="question-card">
             <p class="job-prompt" id="job-prompt"></p>
-            <div class="quiz-constellation" aria-hidden="true"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+            <div class="quiz-constellation" aria-hidden="true">
+              <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+            </div>
             <div class="options" id="job-options"></div>
-            <button class="back-btn" id="job-back-btn" type="button" aria-label="ย้อนกลับ" title="ย้อนกลับ"><span aria-hidden="true">←</span></button>
+            <button class="back-btn" id="job-back-btn" type="button" aria-label="ย้อนกลับ" title="ย้อนกลับ"><span
+                aria-hidden="true">←</span></button>
           </div>
         </div>
       </section>
 
       <section class="screen quiz-screen" id="passport-screen" aria-labelledby="passport-title">
         <div class="progress-row">
-          <div class="progress-info"><span class="progress-count">ด่านสุดท้าย</span><span class="progress-caption">บัตรผ่านนักเดินทาง</span></div>
-          <div class="progress-track" role="progressbar" aria-label="ความคืบหน้าของการเดินทาง" aria-valuemin="0" aria-valuemax="11" aria-valuenow="11"><div class="progress-fill" style="width:100%"></div></div>
+          <div class="progress-info"><span class="progress-count">ด่านสุดท้าย</span><span
+              class="progress-caption">บัตรผ่านนักเดินทาง</span></div>
+          <div class="progress-track" role="progressbar" aria-label="ความคืบหน้าของการเดินทาง" aria-valuemin="0"
+            aria-valuemax="11" aria-valuenow="11">
+            <div class="progress-fill" style="width:100%"></div>
+          </div>
         </div>
         <div class="passport-card">
-          <button class="back-btn" id="passport-back-btn" type="button" aria-label="ย้อนกลับ" title="ย้อนกลับ"><span aria-hidden="true">←</span></button>
+          <button class="back-btn" id="passport-back-btn" type="button" aria-label="ย้อนกลับ" title="ย้อนกลับ"><span
+              aria-hidden="true">←</span></button>
           <header class="passport-intro">
             <span class="chapter-tag">ประตูสุดท้าย · บัตรผ่านนักเดินทาง</span>
             <h2 id="passport-title">ก่อนก้าวขึ้นเวทีใหญ่</h2>
-            <figure class="passport-pass-illustration" role="img" aria-label="บัตรผ่านนักเดินทางหนึ่งใบ มีตราดาวและช่องกรอกชื่อ">
+            <figure class="passport-pass-illustration" role="img"
+              aria-label="บัตรผ่านนักเดินทางหนึ่งใบ มีตราดาวและช่องกรอกชื่อ">
               <svg viewBox="0 0 430 170" aria-hidden="true">
                 <defs>
                   <linearGradient id="pass-card-fill" x1="0" x2="1" y1="0" y2="1">
-                    <stop offset="0" stop-color="#47405c"/>
-                    <stop offset="1" stop-color="#292636"/>
+                    <stop offset="0" stop-color="#47405c" />
+                    <stop offset="1" stop-color="#292636" />
                   </linearGradient>
                   <linearGradient id="pass-card-line" x1="0" x2="1" y1="0" y2="0">
-                    <stop offset="0" stop-color="#f7a7b5"/>
-                    <stop offset=".52" stop-color="#b6a3ff"/>
-                    <stop offset="1" stop-color="#a7d8ff"/>
+                    <stop offset="0" stop-color="#f7a7b5" />
+                    <stop offset=".52" stop-color="#b6a3ff" />
+                    <stop offset="1" stop-color="#a7d8ff" />
                   </linearGradient>
                   <radialGradient id="pass-card-seal">
-                    <stop offset="0" stop-color="#f7d88a" stop-opacity=".3"/>
-                    <stop offset="1" stop-color="#f7d88a" stop-opacity="0"/>
+                    <stop offset="0" stop-color="#f7d88a" stop-opacity=".3" />
+                    <stop offset="1" stop-color="#f7d88a" stop-opacity="0" />
                   </radialGradient>
                 </defs>
-                <rect x="17" y="13" width="396" height="144" rx="18" fill="url(#pass-card-fill)" stroke="url(#pass-card-line)" stroke-width="2"/>
-                <rect x="25" y="21" width="380" height="128" rx="13" fill="none" stroke="#ded9ed" stroke-opacity=".18"/>
-                <path d="M37 34h214" stroke="#f7a7b5" stroke-opacity=".75" stroke-width="2" stroke-linecap="round"/>
-                <text x="38" y="58" fill="#f7a7b5" font-family="League Spartan, Kanit, sans-serif" font-size="10" font-weight="700" letter-spacing="1.5px">IMAGINE CITY</text>
-                <text x="38" y="86" fill="#f5f5f5" font-family="League Spartan, Kanit, sans-serif" font-size="17" font-weight="700">บัตรผ่านนักเดินทาง</text>
-                <text x="38" y="112" fill="#b8bac1" font-family="League Spartan, Kanit, sans-serif" font-size="10">ชื่อเล่น</text>
-                <path d="M38 129h194" stroke="#ded9ed" stroke-opacity=".42" stroke-width="1.5" stroke-linecap="round"/>
-                <circle cx="337" cy="85" r="52" fill="url(#pass-card-seal)"/>
-                <circle cx="337" cy="85" r="34" fill="none" stroke="#f7d88a" stroke-opacity=".55" stroke-width="1.5"/>
-                <circle cx="337" cy="85" r="27" fill="none" stroke="#f7d88a" stroke-opacity=".28"/>
-                <path d="m337 58 7 19 20 8-20 7-7 20-7-20-20-7 20-8z" fill="#f7d88a"/>
-                <path d="m337 49 2 5 5 2-5 2-2 5-2-5-5-2 5-2zM374 85l2 5 5 2-5 2-2 5-2-5-5-2 5-2zM300 85l2 5 5 2-5 2-2 5-2-5-5-2 5-2z" fill="#f7a7b5"/>
+                <rect x="17" y="13" width="396" height="144" rx="18" fill="url(#pass-card-fill)"
+                  stroke="url(#pass-card-line)" stroke-width="2" />
+                <rect x="25" y="21" width="380" height="128" rx="13" fill="none" stroke="#ded9ed"
+                  stroke-opacity=".18" />
+                <path d="M37 34h214" stroke="#f7a7b5" stroke-opacity=".75" stroke-width="2" stroke-linecap="round" />
+                <text x="38" y="58" fill="#f7a7b5" font-family="League Spartan, Kanit, sans-serif" font-size="10"
+                  font-weight="700" letter-spacing="1.5px">IMAGINE CITY</text>
+                <text x="38" y="86" fill="#f5f5f5" font-family="League Spartan, Kanit, sans-serif" font-size="17"
+                  font-weight="700">บัตรผ่านนักเดินทาง</text>
+                <text x="38" y="112" fill="#b8bac1" font-family="League Spartan, Kanit, sans-serif"
+                  font-size="10">ชื่อเล่น</text>
+                <path d="M38 129h194" stroke="#ded9ed" stroke-opacity=".42" stroke-width="1.5" stroke-linecap="round" />
+                <circle cx="337" cy="85" r="52" fill="url(#pass-card-seal)" />
+                <circle cx="337" cy="85" r="34" fill="none" stroke="#f7d88a" stroke-opacity=".55" stroke-width="1.5" />
+                <circle cx="337" cy="85" r="27" fill="none" stroke="#f7d88a" stroke-opacity=".28" />
+                <path d="m337 58 7 19 20 8-20 7-7 20-7-20-20-7 20-8z" fill="#f7d88a" />
+                <path
+                  d="m337 49 2 5 5 2-5 2-2 5-2-5-5-2 5-2zM374 85l2 5 5 2-5 2-2 5-2-5-5-2 5-2zM300 85l2 5 5 2-5 2-2 5-2-5-5-2 5-2z"
+                  fill="#f7a7b5" />
               </svg>
             </figure>
-            <p>ก่อนเธอจะก้าวขึ้นเวทีใหญ่ ผู้เฝ้าประตูขอดูบัตรผ่านสักใบ กรอกเท่าที่สะดวกได้เลย ข้อไหนไม่อยากตอบก็ข้ามได้</p>
+            <p>ก่อนเธอจะก้าวขึ้นเวทีใหญ่ ผู้เฝ้าประตูขอดูบัตรผ่านสักใบ กรอกเท่าที่สะดวกได้เลย ข้อไหนไม่อยากตอบก็ข้ามได้
+            </p>
           </header>
           <form class="passport-form" id="passport-form">
             <fieldset class="passport-field">
               <legend>1. ชื่อเล่นของเธอ</legend>
-              <input class="passport-input" id="passport-nickname" type="text" autocomplete="nickname" placeholder="พิมพ์ชื่อเล่น (ไม่บังคับ)">
+              <input class="passport-input" id="passport-nickname" type="text" autocomplete="nickname"
+                placeholder="พิมพ์ชื่อเล่น (ไม่บังคับ)">
             </fieldset>
 
             <fieldset class="passport-field">
               <legend>2. ตอนนี้เรียนอยู่ชั้นไหน</legend>
               <select class="passport-select" id="passport-school-level">
                 <option value="">เลือกชั้นเรียน (ไม่บังคับ)</option>
-                <option>ม.4</option><option>ม.5</option><option>ม.6</option>
-                <option>ปวช.</option><option>ปวส.</option><option value="other">อื่น ๆ</option>
+                <option>ม.4</option>
+                <option>ม.5</option>
+                <option>ม.6</option>
+                <option>ปวช.</option>
+                <option>ปวส.</option>
+                <option value="other">อื่น ๆ</option>
               </select>
-              <input class="passport-input passport-other" id="passport-school-level-other" type="text" aria-label="ระบุชั้นเรียนอื่น ๆ" placeholder="ระบุชั้นเรียน">
+              <input class="passport-input passport-other" id="passport-school-level-other" type="text"
+                aria-label="ระบุชั้นเรียนอื่น ๆ" placeholder="ระบุชั้นเรียน">
             </fieldset>
 
             <fieldset class="passport-field">
               <legend>3. เรียนสายอะไรอยู่</legend>
               <select class="passport-select" id="passport-study-track">
                 <option value="">เลือกสายการเรียน (ไม่บังคับ)</option>
-                <option>ศิลป์-คำนวณ</option><option>ศิลป์-ภาษา</option><option>วิทย์-คณิต</option>
-                <option>สายอาชีพ</option><option value="other">อื่น ๆ</option>
+                <option>ศิลป์-คำนวณ</option>
+                <option>ศิลป์-ภาษา</option>
+                <option>วิทย์-คณิต</option>
+                <option>สายอาชีพ</option>
+                <option value="other">อื่น ๆ</option>
               </select>
-              <input class="passport-input passport-other" id="passport-study-track-other" type="text" aria-label="ระบุสายการเรียนอื่น ๆ" placeholder="ระบุสายการเรียน">
+              <input class="passport-input passport-other" id="passport-study-track-other" type="text"
+                aria-label="ระบุสายการเรียนอื่น ๆ" placeholder="ระบุสายการเรียน">
             </fieldset>
 
             <div class="passport-field">
               <label class="passport-label" for="passport-province">4. อยู่จังหวัดอะไร</label>
-              <input class="passport-input" id="passport-province" type="text" autocomplete="address-level1" placeholder="พิมพ์ชื่อจังหวัด (ไม่บังคับ)">
+              <input class="passport-input" id="passport-province" type="text" autocomplete="address-level1"
+                placeholder="พิมพ์ชื่อจังหวัด (ไม่บังคับ)">
             </div>
 
             <fieldset class="passport-field">
@@ -1352,12 +338,14 @@
                 <label class="passport-choice"><input type="checkbox" value="Facebook">Facebook</label>
                 <label class="passport-choice"><input type="checkbox" value="Instagram">Instagram</label>
                 <label class="passport-choice"><input type="checkbox" value="TikTok">TikTok</label>
-                <label class="passport-choice"><input type="checkbox" value="เพื่อนหรือรุ่นพี่">เพื่อนหรือรุ่นพี่</label>
+                <label class="passport-choice"><input type="checkbox"
+                    value="เพื่อนหรือรุ่นพี่">เพื่อนหรือรุ่นพี่</label>
                 <label class="passport-choice"><input type="checkbox" value="ครูแนะแนว">ครูแนะแนว</label>
                 <label class="passport-choice"><input type="checkbox" value="งานกิจกรรม">งานกิจกรรม</label>
                 <label class="passport-choice"><input type="checkbox" value="other">อื่น ๆ</label>
               </div>
-              <input class="passport-input passport-other" id="passport-discovery-other" type="text" aria-label="ระบุแหล่งที่รู้จักคณะอื่น ๆ" placeholder="ระบุแหล่งที่รู้จักคณะ">
+              <input class="passport-input passport-other" id="passport-discovery-other" type="text"
+                aria-label="ระบุแหล่งที่รู้จักคณะอื่น ๆ" placeholder="ระบุแหล่งที่รู้จักคณะ">
             </fieldset>
 
             <fieldset class="passport-field">
@@ -1365,12 +353,14 @@
               <div class="passport-options" data-passport-group="selectionFactors">
                 <label class="passport-choice"><input type="checkbox" value="ค่าเทอม">ค่าเทอม</label>
                 <label class="passport-choice"><input type="checkbox" value="ทุนการศึกษา">ทุนการศึกษา</label>
-                <label class="passport-choice"><input type="checkbox" value="ชื่อเสียงมหาวิทยาลัย">ชื่อเสียงมหาวิทยาลัย</label>
+                <label class="passport-choice"><input type="checkbox"
+                    value="ชื่อเสียงมหาวิทยาลัย">ชื่อเสียงมหาวิทยาลัย</label>
                 <label class="passport-choice"><input type="checkbox" value="อาชีพหลังเรียนจบ">อาชีพหลังเรียนจบ</label>
                 <label class="passport-choice"><input type="checkbox" value="ผลงานของรุ่นพี่">ผลงานของรุ่นพี่</label>
                 <label class="passport-choice"><input type="checkbox" value="การเดินทาง">การเดินทาง</label>
                 <label class="passport-choice"><input type="checkbox" value="ความชอบของตัวเอง">ความชอบของตัวเอง</label>
-                <label class="passport-choice"><input type="checkbox" value="ผู้ปกครองสนับสนุน">ผู้ปกครองสนับสนุน</label>
+                <label class="passport-choice"><input type="checkbox"
+                    value="ผู้ปกครองสนับสนุน">ผู้ปกครองสนับสนุน</label>
               </div>
               <p class="passport-hint" id="selection-factors-hint" aria-live="polite">เลือกได้ไม่เกิน 2 ข้อ</p>
             </fieldset>
@@ -1378,10 +368,14 @@
             <fieldset class="passport-field">
               <legend>7. ตอนนี้อยู่ขั้นไหนของการเลือกคณะ</legend>
               <div class="passport-options" data-passport-radio="selectionStage">
-                <label class="passport-choice"><input type="radio" name="passport-selection-stage" value="เพิ่งเริ่มหาข้อมูล">เพิ่งเริ่มหาข้อมูล</label>
-                <label class="passport-choice"><input type="radio" name="passport-selection-stage" value="กำลังเปรียบเทียบหลายที่">กำลังเปรียบเทียบหลายที่</label>
-                <label class="passport-choice"><input type="radio" name="passport-selection-stage" value="ตั้งใจสมัครแล้ว">ตั้งใจสมัครแล้ว</label>
-                <label class="passport-choice"><input type="radio" name="passport-selection-stage" value="รอผลสอบที่อื่นก่อน">รอผลสอบที่อื่นก่อน</label>
+                <label class="passport-choice"><input type="radio" name="passport-selection-stage"
+                    value="เพิ่งเริ่มหาข้อมูล">เพิ่งเริ่มหาข้อมูล</label>
+                <label class="passport-choice"><input type="radio" name="passport-selection-stage"
+                    value="กำลังเปรียบเทียบหลายที่">กำลังเปรียบเทียบหลายที่</label>
+                <label class="passport-choice"><input type="radio" name="passport-selection-stage"
+                    value="ตั้งใจสมัครแล้ว">ตั้งใจสมัครแล้ว</label>
+                <label class="passport-choice"><input type="radio" name="passport-selection-stage"
+                    value="รอผลสอบที่อื่นก่อน">รอผลสอบที่อื่นก่อน</label>
               </div>
             </fieldset>
 
@@ -1421,803 +415,9 @@
       </section>
     </main>
   </div>
+  
+  <script src="js/script.js"></script>
 
-  <script>
-    const branches = {
-      DGA: {
-        title: "นักเสกจินตนาการ",
-        district: "ตรอกจินตนาการ",
-        districtLabel: "ย่านศิลป์",
-        question: "ถ้าได้สร้างโลกขึ้นมาหนึ่งใบ คุณอยากให้มันเริ่มจากอะไร",
-        prompt: "ศิลปินสูงวัยยื่นขวดสีวิเศษให้ แล้วชวนคุณนึกถึงโลกที่อยากสร้าง",
-        jobs: [
-          ["Character Designer", "สร้างตัวละครให้ทั้งโลกจำได้"],
-          ["Concept Artist / Background Artist", "วาดโลกและฉากหลังให้เรื่องเล่ามีชีวิต"],
-          ["Webtoon / Comic / Storyboard Artist", "เล่าเรื่องด้วยภาพหลายช่อง"],
-          ["Illustrator / Art Toy / Sticker Creator", "ทำให้ภาพวาดกลายเป็นสินค้าและของสะสม"]
-        ],
-        result: "ภาพวาดของคุณคือสีแรกที่ย้อมเมืองให้กลับมามีชีวิต ทุกคนเงยหน้ามองแล้วพูดตรงกันว่า “นี่แหละโลกที่เราเคยฝันถึง”",
-        course: "Digital Arts",
-        character: "assets/dga.png.webp",
-        careers: ["Illustrator", "Concept / Visual Development Artist", "Character Designer", "Comic / Webtoon Artist", "Storyboard Artist", "Background Artist", "Art Toy Designer", "Sticker Creator"]
-      },
-      DGD: {
-        title: "นักออกแบบประจำเมือง",
-        district: "ถนนเอกลักษณ์",
-        districtLabel: "ย่านดีไซน์",
-        question: "ถ้าได้ฝากลายเซ็นไว้สักแห่งในเมือง คุณอยากให้เป็นที่ไหน",
-        prompt: "นักออกแบบคนหนึ่งยืนอยู่หน้าร้านที่ป้ายยังว่างเปล่า แล้วชวนคุณเลือกพื้นที่สร้างเอกลักษณ์",
-        jobs: [
-          ["Brand Identity Designer", "ออกแบบป้ายและโลโก้ที่ทุกคนเห็นทุกวัน"],
-          ["UI Designer", "สร้างหน้าจอแอปและเว็บไซต์ของเมือง"],
-          ["Packaging Designer", "ออกแบบกล่องและแพ็กเกจที่ใคร ๆ ก็อยากเก็บ"],
-          ["Art Director / Key Visual Designer", "สร้างโปสเตอร์ที่คนเดินผ่านแล้วต้องหันมอง"]
-        ],
-        result: "ภาพลักษณ์ใหม่ที่คุณออกแบบทำให้ทั้งเมืองมีหน้าตาเป็นของตัวเอง ไม่มีใครสับสนอีกแล้วว่าที่นี่คือที่ไหน",
-        course: "Digital Graphic Design",
-        character: "assets/dgd.png.webp",
-        careers: ["Graphic Designer", "Brand Identity Designer", "Art / Creative Director", "UI Designer", "Packaging Designer", "Editorial Designer", "Motion Graphic Designer", "Poster / Key Visual Designer"]
-      },
-      IGD: {
-        title: "นักสร้างสนามเล่น",
-        district: "สนามแห่งการเล่น",
-        districtLabel: "ย่านเกม",
-        question: "เกมของคุณจะเริ่มจากอะไร",
-        prompt: "หัวหน้าสนามเกมเดินมาหา พร้อมชวนคุณออกแบบโลกที่ใคร ๆ ก็อยากเข้ามาเล่น",
-        jobs: [
-          ["Game Designer / Level Designer", "คิดกติกาและระบบให้คนเล่นแล้วติดใจ"],
-          ["Game Artist", "ออกแบบฉากและตัวละครในเกม"],
-          ["VR / AR Designer", "สร้างโลกเสมือนที่เดินเข้าไปได้จริง"],
-          ["Game Producer", "ดูแลทีมให้เกมไปถึงมือผู้เล่น"]
-        ],
-        result: "ทั้งเมืองกลายเป็นสนามเล่นของคุณ ทุกคนหัวเราะ ตื่นเต้น และไม่มีใครอยากให้เกมจบ",
-        course: "Interactive and Game Design",
-        character: "assets/igd.png.webp",
-        careers: ["Game / Level Designer", "Game Artist", "Game UI/UX Designer", "VR / AR Designer", "Game Producer", "Narrative Designer", "Technical Artist", "Playtest Designer", "Esports Content Producer"]
-      },
-      AFX: {
-        title: "นักปั้นภาพให้มีชีวิต",
-        district: "กำแพงแห่งเรื่องราว",
-        districtLabel: "ย่านภาพยนตร์",
-        question: "คุณอยากคุมฉากไหนของหนังเรื่องนี้",
-        prompt: "ผู้กำกับลึกลับยื่นสคริปต์มาให้ แล้วถามว่าคุณอยากเสกภาพแบบไหนให้เกิดขึ้นจริง",
-        jobs: [
-          ["3D Animator / Rigging Artist", "ทำให้ตัวละครขยับเหมือนมีชีวิตจริง"],
-          ["3D Modeler / Texture Artist", "ปั้นสิ่งของและตัวละครจากความว่างเปล่า"],
-          ["VFX Artist", "สร้างฉากระเบิด ไฟ น้ำ และควัน"],
-          ["Compositor", "รวมทุกชั้นภาพให้ดูเหมือนถ่ายจริงในช็อตเดียว"]
-        ],
-        result: "ภาพเคลื่อนไหวของคุณทำให้ท้องฟ้าสว่างวาบ ไม่มีใครเชื่อว่าทั้งหมดนี้เป็นฝีมือคนคนเดียว",
-        course: "Computer Animation and Visual Effects",
-        character: "assets/afx.png.webp",
-        careers: ["3D Artist", "3D Animator", "VFX Artist / Compositor", "Layout / Previs Artist", "VFX Supervisor"]
-      },
-      DEN: {
-        title: "นักรวมใจคนทั้งเมือง",
-        district: "เวทีแห่งตัวตน",
-        districtLabel: "ย่านบันเทิง",
-        question: "บทบาทไหนทำให้คุณใจเต้นแรงที่สุด",
-        prompt: "พิธีกรประจำเมืองยื่นไมค์มาให้ แล้วชวนคุณเลือกบทบาทที่จะทำให้คนทั้งเมืองมารวมกัน",
-        jobs: [
-          ["Content Creator / Scriptwriter", "คิดรายการและคอนเทนต์ที่ทุกคนรอดู"],
-          ["Event / Show Producer", "จัดงานที่มอบประสบการณ์เดียวกันให้คนนับพัน"],
-          ["Virtual Talent / Streaming Producer", "อยู่เบื้องหลังตัวตนเสมือนและสตรีมเมอร์"],
-          ["Entertainment Marketer / Community Manager", "ทำให้ชุมชนแฟนคลับเติบโต"]
-        ],
-        result: "คุณไม่ได้ขึ้นเวทีคนเดียว แต่ทำให้ทั้งเมืองได้ขึ้นเวทีไปพร้อมกัน",
-        course: "Digital Entertainment",
-        character: "assets/den.png.webp",
-        careers: ["Content Creator / Scriptwriter", "Event / Show Producer", "Streaming / Virtual Talent Producer", "Entertainment Marketing / Social Media Manager", "Video Producer", "Community Manager", "Brand Experience Designer"]
-      }
-    };
-
-    const mixedTitles = {
-      "DGA|DGD": "นักออกแบบที่เล่าเรื่องด้วยภาพวาด",
-      "AFX|DGD": "นักออกแบบที่ทำให้ภาพขยับ",
-      "DGD|IGD": "นักออกแบบประสบการณ์",
-      "DGD|DEN": "นักออกแบบที่เล่าเรื่องเก่ง",
-      "AFX|DGA": "นักวาดที่ทำให้ภาพมีชีวิต",
-      "DGA|IGD": "นักวาดโลกของเกม",
-      "DGA|DEN": "ครีเอเตอร์สายวาด",
-      "AFX|IGD": "นักสร้างโลกเสมือนจริง",
-      "AFX|DEN": "นักเล่าเรื่องด้วยภาพยนตร์",
-      "DEN|IGD": "นักสร้างสนามเล่นให้คนมารวมกัน"
-    };
-
-    const resultJobTitles = {
-      DGA: ["Character Designer", "Concept / Visual Development Artist", "Comic / Webtoon Artist", "Art Toy Designer"],
-      DGD: ["Brand Identity Designer", "UI Designer", "Packaging Designer", "Poster / Key Visual Designer"],
-      IGD: ["Game / Level Designer", "Game Artist", "VR / AR Designer", "Game Producer"],
-      AFX: ["3D Animator", "3D Artist", "VFX Artist / Compositor", "VFX Artist / Compositor"],
-      DEN: ["Content Creator / Scriptwriter", "Event / Show Producer", "Streaming / Virtual Talent Producer", "Entertainment Marketing / Social Media Manager"]
-    };
-
-    const questions = [
-      {
-        chapter: "บทที่ 1 · ตื่นขึ้นในเมืองไร้สี",
-        title: "ตื่นขึ้นมา",
-        story: "ทุกอย่างรอบตัวเป็นสีเทา แต่มือของคุณยังขยับได้\nและยังมีอะไรให้ทำอีกเยอะ",
-        prompt: "ดวงไฟลอยมาใกล้ ๆ แล้วกระซิบว่า “เหลือเวลาถึงคืนนี้เท่านั้นนะ ช่วยเมืองนี้ด้วย” สิ่งแรกที่คุณทำคือ…",
-        options: [
-          ["DGA", "หยิบชอล์กขึ้นมาแล้วลงสีบนกำแพง"],
-          ["DGD", "เดินดูป้ายที่ตัวอักษรซีด แล้วจัดใหม่ให้อ่านง่ายขึ้น"],
-          ["IGD", "ถามดวงไฟว่าเมืองนี้มีกติกาอะไร แล้วจะผ่านด่านได้ยังไง"],
-          ["AFX", "ลองดันของรอบตัวเบา ๆ ว่าทำไมทุกอย่างถึงนิ่งสนิท"],
-          ["DEN", "ตะโกนเรียกคนในเมืองให้มารวมกันที่จัตุรัส"]
-        ]
-      },
-      {
-        chapter: "บทที่ 1 · ตื่นขึ้นในเมืองไร้สี",
-        title: "ของติดตัว",
-        story: "ดวงไฟบอกว่าพกไปได้แค่ชิ้นเดียว เลือกของที่อยากให้เป็นเพื่อนร่วมทาง",
-        prompt: "คุณจะหยิบอะไรติดตัวไปด้วย",
-        options: [
-          ["DGA", "สมุดสเก็ตช์ที่วาดได้ไม่มีวันหมดหน้า"],
-          ["DGD", "ชุดสีกับตัวอักษรวิเศษที่ทำให้อะไรก็ดูเข้าที่เข้าทาง"],
-          ["IGD", "ตลับเกมเก่า ๆ ที่ยังไม่มีใครรู้วิธีเล่น"],
-          ["AFX", "กล้องฟิล์มที่ถ่ายแล้วได้ภาพเคลื่อนไหว"],
-          ["DEN", "ไมโครโฟนที่เสียงดังไปทั่วทั้งเมือง"]
-        ]
-      },
-      {
-        chapter: "บทที่ 1 · ตื่นขึ้นในเมืองไร้สี",
-        title: "ป้ายบอกทางห้าทิศ",
-        story: "กลางจัตุรัสมีป้ายห้าป้ายชี้ไปคนละทิศ แต่ละทางมีเสียงและเรื่องราวไม่เหมือนกัน",
-        prompt: "คุณเดินเข้าถนนสายไหนก่อน",
-        options: [
-          ["DGA", "สายที่ผนังทั้งสองข้างเต็มไปด้วยภาพวาด"],
-          ["DGD", "สายที่เต็มไปด้วยป้ายร้านและโลโก้"],
-          ["IGD", "สายที่มีเสียงเกมกับแสงไฟหลากสี"],
-          ["AFX", "สายที่มีเสียงเครื่องฉายหนังกับควันเอฟเฟกต์"],
-          ["DEN", "สายที่มีเสียงเพลงและผู้คนมายืนรวมกัน"]
-        ]
-      },
-      {
-        chapter: "บทที่ 2 · ปัญหาของชาวเมือง",
-        title: "สะพานที่พังครึ่งหนึ่ง",
-        story: "เดินไปได้ไม่กี่ก้าว คุณก็เจอคนที่ต้องการความช่วยเหลือทุกมุมถนน",
-        prompt: "สะพานข้ามแม่น้ำพังไปครึ่งทาง ฝั่งโน้นมีคนรออยู่ คุณจะข้ามไปยังไง",
-        options: [
-          ["DGA", "วาดสะพานขึ้นมาใหม่ด้วยเส้นและสีในแบบของคุณ"],
-          ["DGD", "ทำป้ายเตือนกับป้ายบอกทางอ้อม ให้ทุกคนเดินตามได้ไม่งง"],
-          ["IGD", "ไขกลไกของสะพานให้กลับมาทำงานอีกครั้ง"],
-          ["AFX", "ทำภาพสะพานที่ค่อย ๆ ประกอบตัวเองขึ้นมาให้ทุกคนเห็น"],
-          ["DEN", "ชวนชาวเมืองมาช่วยกันซ่อม แล้วจัดเป็นงานฉลองเล็ก ๆ"]
-        ]
-      },
-      {
-        chapter: "บทที่ 2 · ปัญหาของชาวเมือง",
-        title: "เด็กน้อยร้องไห้",
-        story: "เด็กคนหนึ่งนั่งร้องไห้อยู่ข้างทาง เพราะตัวการ์ตูนที่รักที่สุดหายไปจากเมือง",
-        prompt: "คุณจะช่วยหนูน้อยยังไง",
-        options: [
-          ["DGA", "วาดตัวการ์ตูนตัวนั้นขึ้นมาใหม่ให้"],
-          ["DGD", "ทำสติกเกอร์ โปสเตอร์ และของที่ระลึกให้เธอเก็บไว้"],
-          ["IGD", "สร้างเกมเล็ก ๆ ให้เธอได้เล่นกับตัวการ์ตูนตัวนั้น"],
-          ["AFX", "ทำให้ตัวการ์ตูนมีชีวิตขึ้นมา เดินและพูดกับเธอได้"],
-          ["DEN", "ชวนเด็ก ๆ คนอื่นมานั่งล้อมวงฟังเรื่องของตัวการ์ตูนตัวนั้น"]
-        ]
-      },
-      {
-        chapter: "บทที่ 2 · ปัญหาของชาวเมือง",
-        title: "ร้านเก่าแก่ที่ใกล้ปิด",
-        story: "เจ้าของร้านเก่าแก่เล่าว่าไม่มีใครรู้จักร้านเขาแล้ว",
-        prompt: "คุณจะตอบเขาว่ายังไง",
-        options: [
-          ["DGA", "“หนูจะวาดภาพให้ร้านนี้มีเอกลักษณ์ไม่เหมือนใคร”"],
-          ["DGD", "“หนูจะทำแบรนด์ใหม่ให้ ตั้งแต่โลโก้ไปจนถึงป้ายหน้าร้าน”"],
-          ["IGD", "“หนูจะทำให้การเดินเข้าร้านเป็นเหมือนเล่นเกมสนุก ๆ”"],
-          ["AFX", "“หนูจะทำคลิปแนะนำร้านที่ดูแล้วขนลุก”"],
-          ["DEN", "“หนูจะจัดงานแล้วช่วยโปรโมต ให้คนแห่กันมา”"]
-        ]
-      },
-      {
-        chapter: "บทที่ 3 · ด่านทดสอบหน้าประตูหินผา",
-        title: "สิ่งที่พร้อมฝึกทุกวัน",
-        story: "ไม่ว่าคุณจะเดินมาจากย่านไหน\nทุกคนต้องเจอประตูหินบานใหญ่ก่อนจะไปต่อ",
-        prompt: "ประตูถามว่า “คุณพร้อมฝึกอะไรทุกวัน”",
-        options: [
-          ["DGA", "วาดรูปและสังเกตโลกรอบตัวให้ละเอียดขึ้น"],
-          ["DGD", "จัดองค์ประกอบ สี และตัวอักษรให้ลงตัว"],
-          ["IGD", "คิดเป็นระบบ เป็นขั้นเป็นตอน"],
-          ["AFX", "ทำให้ภาพเคลื่อนไหวและดูสมจริง"],
-          ["DEN", "พูด เล่าเรื่อง และประสานคนให้ไปทางเดียวกัน"]
-        ]
-      },
-      {
-        chapter: "บทที่ 4 · เพื่อนร่วมทาง",
-        title: "เจอเพื่อนสี่คน",
-        story: "ประตูหินเปิดออก และคุณไม่ได้เดินต่อคนเดียวอีกแล้ว",
-        prompt: "ที่ลานน้ำพุ คุณเจอนักเดินทางอีกสี่คน แต่ละคนมีของที่ตัวเองยังทำไม่ได้ คุณเลือกเป็นคนที่…",
-        options: [
-          ["DGA", "ช่วยวาดภาพให้ทุกคนเห็นตรงกัน"],
-          ["DGD", "ทำไกด์ให้ทุกอย่างดูลงตัวและเป็นระเบียบ"],
-          ["IGD", "คิดวิธีให้ทุกคนทำงานด้วยกันแล้วสนุก"],
-          ["AFX", "ทำตัวอย่างสั้น ๆ ให้เห็นว่าแผนจะออกมาหน้าตาเป็นยังไง"],
-          ["DEN", "เป็นคนกลางที่ทำให้ทุกคนอยากเดินต่อไปด้วยกัน"]
-        ]
-      },
-      {
-        chapter: "บทที่ 4 · เพื่อนร่วมทาง",
-        title: "เพื่อนเห็นไม่ตรงกัน",
-        story: "กลางทางมีสองแยก ทีมเถียงกันว่าจะไปทางไหน",
-        prompt: "คุณจะทำอะไร",
-        options: [
-          ["DGA", "วาดแผนที่ให้เห็นภาพว่าแต่ละทางไปไหนบ้าง"],
-          ["DGD", "ทำตารางเปรียบเทียบให้ตัดสินใจง่ายขึ้น"],
-          ["IGD", "เสนอให้ลองไปทั้งสองทางแล้วดูผลลัพธ์"],
-          ["AFX", "ทำภาพจำลองให้เห็นว่าปลายทางของแต่ละทางเป็นยังไง"],
-          ["DEN", "ฟังทุกคนก่อน แล้วหาจุดที่ทุกคนรับได้"]
-        ]
-      },
-      {
-        chapter: "บทที่ 5 · คืนเทศกาล",
-        title: "ขึ้นเวที",
-        story: "ฟ้ามืดลงแล้ว ไฟทั่วเมืองเริ่มติด เหลือแค่เวทีใหญ่ที่ยังว่างอยู่",
-        prompt: "ไฮไลต์ที่คุณอยากมอบให้ทั้งเมืองคือ…",
-        options: [
-          ["DGA", "ภาพวาดขนาดยักษ์ที่คนทั้งเมืองเงยหน้ามอง"],
-          ["DGD", "ภาพลักษณ์ใหม่ของเมือง ที่ทำให้ทุกมุมมีสไตล์เดียวกัน"],
-          ["IGD", "เกมที่คนทั้งเมืองเข้ามาเล่นพร้อมกัน"],
-          ["AFX", "โชว์ภาพเคลื่อนไหวกับเอฟเฟกต์ที่ทำให้ทั้งลานตะลึง"],
-          ["DEN", "การแสดงสดที่ทุกคนมีส่วนร่วมได้"]
-        ]
-      },
-      {
-        chapter: "บทที่ 5 · คืนเทศกาล",
-        title: "สีกลับมาแล้ว",
-        story: "เมื่อสีค่อย ๆ กลับมาทั่วเมือง ผู้คนหันมามองคุณ",
-        prompt: "คุณอยากให้พวกเขาจำคุณว่าเป็นใคร",
-        options: [
-          ["DGA", "คนที่ให้กำเนิดตัวละครที่ทุกคนรัก"],
-          ["DGD", "คนที่ทำให้เมืองนี้ดูดีและมีเอกลักษณ์"],
-          ["IGD", "คนที่สร้างโลกให้ทุกคนได้เข้ามาเล่น"],
-          ["AFX", "คนที่ทำให้สิ่งที่ดูเป็นไปไม่ได้กลายเป็นจริง"],
-          ["DEN", "คนที่ทำให้ทุกคนมารวมกันได้"]
-        ]
-      }
-    ];
-
-    const branchOrder = ["DGA", "DGD", "IGD", "AFX", "DEN"];
-    const state = {
-      screen: "intro",
-      questionIndex: 0,
-      questionStep: "story",
-      answers: Array(questions.length).fill(null),
-      pendingCode: null,
-      district: null,
-      jobIndex: null,
-      passport: {
-        nickname: "",
-        schoolLevel: "",
-        schoolLevelOther: "",
-        studyTrack: "",
-        studyTrackOther: "",
-        province: "",
-        discoverySources: [],
-        discoveryOther: "",
-        selectionFactors: [],
-        selectionStage: "",
-        creativeWork: [],
-        newsChannels: []
-      }
-    };
-    let history = [];
-    let optionOrders = [];
-
-    const $ = (selector) => document.querySelector(selector);
-    const screens = {
-      intro: $("#intro-screen"),
-      story: $("#story-screen"),
-      question: $("#question-screen"),
-      districts: $("#district-screen"),
-      job: $("#job-screen"),
-      passport: $("#passport-screen"),
-      result: $("#result-screen")
-    };
-
-    function shuffle(items) {
-      const result = [...items];
-      for (let i = result.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [result[i], result[j]] = [result[j], result[i]];
-      }
-      return result;
-    }
-
-    let screenTransitionId = 0;
-    const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    function showScreen(name) {
-      const next = screens[name];
-      if (!next) return;
-      const current = Object.values(screens).find((element) => element.classList.contains("active"));
-      const transitionId = ++screenTransitionId;
-      const reducedMotion = prefersReducedMotion();
-      state.screen = name;
-
-      const enterNext = () => {
-        next.classList.remove("is-leaving", "is-choice-lock");
-        next.classList.add("active", "screen-entering");
-        window.scrollTo({ top: 0, behavior: "auto" });
-        if (reducedMotion) {
-          next.classList.remove("screen-entering");
-          return;
-        }
-        window.setTimeout(() => {
-          if (transitionId === screenTransitionId) next.classList.remove("screen-entering");
-        }, 450);
-      };
-
-      if (current === next) {
-        next.classList.remove("screen-entering");
-        if (!reducedMotion) {
-          next.classList.add("screen-entering");
-          next.style.animation = "none";
-          void next.offsetWidth;
-          next.style.animation = "";
-          window.setTimeout(() => {
-            if (transitionId === screenTransitionId) next.classList.remove("screen-entering");
-          }, 450);
-        }
-        return;
-      }
-
-      if (current && !reducedMotion) {
-        current.classList.add("is-leaving");
-        window.setTimeout(() => {
-          if (transitionId !== screenTransitionId) return;
-          current.classList.remove("active", "is-leaving", "screen-entering", "is-choice-lock");
-          enterNext();
-        }, 110);
-      } else {
-        if (current) current.classList.remove("active", "is-leaving", "screen-entering", "is-choice-lock");
-        enterNext();
-      }
-    }
-
-    function confirmChoice(button, onConfirm) {
-      const screen = button.closest(".screen");
-      if (!screen || screen.classList.contains("screen-entering") || screen.classList.contains("is-choice-lock")) return;
-      const reducedMotion = prefersReducedMotion();
-      screen.classList.add("is-choice-lock");
-      button.classList.add("selected", "is-picking");
-      button.setAttribute("aria-pressed", "true");
-      window.setTimeout(() => {
-        button.classList.remove("is-picking");
-        screen.classList.remove("is-choice-lock");
-        onConfirm();
-      }, reducedMotion ? 0 : 140);
-    }
-
-    function snapshot() {
-      return JSON.parse(JSON.stringify(state));
-    }
-
-    function back() {
-      if (!history.length) {
-        if (state.screen === "question" && state.questionIndex === 0 && state.questionStep === "question") {
-          state.questionStep = "story";
-          renderQuestion();
-        } else if (state.screen === "question" && state.questionIndex === 0) {
-          showScreen("story");
-        }
-        return;
-      }
-      Object.assign(state, history.pop());
-      render();
-    }
-
-    function showStoryIntro() {
-      showScreen("story");
-    }
-
-    function begin() {
-      state.questionIndex = 0;
-      state.questionStep = "story";
-      state.answers = Array(questions.length).fill(null);
-      state.pendingCode = null;
-      state.district = null;
-      state.jobIndex = null;
-      state.passport = {
-        nickname: "",
-        schoolLevel: "",
-        schoolLevelOther: "",
-        studyTrack: "",
-        studyTrackOther: "",
-        province: "",
-        discoverySources: [],
-        discoveryOther: "",
-        selectionFactors: [],
-        selectionStage: "",
-        creativeWork: [],
-        newsChannels: []
-      };
-      history = [];
-      optionOrders = questions.map((question) => shuffle(question.options));
-      renderQuestion();
-      showScreen("question");
-    }
-
-    function render() {
-      if (state.screen === "story") showScreen("story");
-      else if (state.screen === "question") renderQuestion();
-      else if (state.screen === "districts") renderDistricts();
-      else if (state.screen === "job") renderJobs();
-      else if (state.screen === "passport") renderPassport();
-      else if (state.screen === "result") renderResult();
-      else showScreen("intro");
-    }
-
-    function renderQuestion() {
-      const index = state.questionIndex;
-      const isSceneIntro = index <= 10 && state.questionStep === "story";
-      const isFirstSceneQuestion = index === 0 && state.questionStep === "question";
-      const isSceneQuestion = index >= 1 && index <= 10 && state.questionStep === "question";
-      $("#question-screen").classList.toggle("is-scene-intro", isSceneIntro);
-      $("#question-screen").classList.toggle("is-first-question", isFirstSceneQuestion);
-      $("#question-screen").classList.toggle("is-scene-question", isSceneQuestion);
-      const question = questions[index];
-      const currentAnswer = state.answers[index];
-      if (state.pendingCode === null && currentAnswer) state.pendingCode = currentAnswer;
-      $("#chapter-tag").textContent = question.chapter;
-      $("#story-title").textContent = question.title;
-      $("#story-copy").textContent = question.story;
-      $("#story-illustration").hidden = index !== 0;
-      $("#packing-illustration").hidden = index !== 1;
-      $("#shop-row-illustration").hidden = index !== 5 || !isSceneIntro;
-      $("#fading-character-illustration").hidden = index !== 4;
-      $("#junction-illustration").hidden = index !== 2;
-      $("#cliff-gate-illustration").hidden = index !== 6;
-      $("#explorer-friends-illustration").hidden = index !== 7;
-      $("#fork-road-illustration").hidden = index !== 8;
-      $("#festival-stage-illustration").hidden = index !== 9;
-      $("#restored-star-illustration").hidden = index !== 10;
-      $("#bridge-frame").hidden = index !== 3;
-      $("#scene-story-actions").hidden = !isSceneIntro;
-      $("#question-title").textContent = question.prompt;
-      $("#progress-count").textContent = `${String(index + 1).padStart(2, "0")} / 11`;
-      const percent = (index / questions.length) * 100;
-      $("#progress-fill").style.width = `${percent}%`;
-      $("#progress-track").setAttribute("aria-valuenow", String(index));
-      const container = $("#options");
-      container.replaceChildren();
-      optionOrders[index].forEach((option) => {
-        const [code, text] = option;
-        const button = document.createElement("button");
-        button.type = "button";
-        button.className = `option${state.pendingCode === code ? " selected" : ""}`;
-        button.setAttribute("aria-pressed", state.pendingCode === code ? "true" : "false");
-        button.innerHTML = '<span class="option-text"></span><span class="option-check" aria-hidden="true">✦</span>';
-        button.querySelector(".option-text").textContent = text;
-        button.addEventListener("click", () => {
-          confirmChoice(button, () => {
-          state.pendingCode = code;
-          continueQuestion();
-          });
-        });
-        container.append(button);
-      });
-      $("#scene-question-btn").textContent = "แตะเพื่อไปต่อ";
-      $("#back-btn").style.visibility = history.length || index === 0 ? "visible" : "hidden";
-      showScreen("question");
-    }
-
-    function scores(answerCount = state.answers.length) {
-      const result = Object.fromEntries(branchOrder.map((code) => [code, 0]));
-      state.answers.slice(0, answerCount).forEach((code) => { if (code) result[code]++; });
-      return result;
-    }
-
-    function sortedBranches(scoreMap) {
-      return [...branchOrder].sort((a, b) => scoreMap[b] - scoreMap[a] || branchOrder.indexOf(a) - branchOrder.indexOf(b));
-    }
-
-    function renderDistricts() {
-      const available = branchOrder;
-      $("#district-title").textContent = "ย่านของเธอ";
-      $("#district-copy").textContent = "ดวงไฟพาเธอเดินเข้าไปในย่านที่ใกล้ตัวเธอที่สุด เลือกได้หนึ่งย่าน";
-      const list = $("#district-list");
-      list.replaceChildren();
-      available.forEach((code) => {
-        const branch = branches[code];
-        const button = document.createElement("button");
-        button.type = "button";
-        button.className = `district-card${state.district === code ? " selected" : ""}`;
-        button.setAttribute("aria-pressed", state.district === code ? "true" : "false");
-        const districtScene = code === "DGA"
-          ? '<div class="district-scene"><img src="assets/6.1.png.webp" alt="ภาพประกอบตรอกจินตนาการ"></div>'
-          : code === "DGD"
-            ? '<div class="district-scene"><img src="assets/6.2.png.webp" alt="ภาพประกอบถนนเอกลักษณ์"></div>'
-            : code === "IGD"
-              ? '<div class="district-scene"><img src="assets/6.3.png.webp" alt="ภาพประกอบสนามแห่งการเล่น"></div>'
-              : code === "AFX"
-                ? '<div class="district-scene"><img src="assets/6.4.png.webp" alt="ภาพประกอบกำแพงแห่งเรื่องราว"></div>'
-                : code === "DEN"
-                  ? '<div class="district-scene"><img src="assets/6.5.png.webp" alt="ภาพประกอบเวทีแห่งตัวตน"></div>'
-                  : '<div class="district-scene" aria-hidden="true"></div>';
-        button.innerHTML = `<span class="district-code">${code} · ${branch.districtLabel}</span>${districtScene}<h3></h3>`;
-        button.querySelector("h3").textContent = branch.district;
-        button.addEventListener("click", () => {
-          confirmChoice(button, () => {
-          state.district = code;
-          history.push(snapshot());
-          state.jobIndex = null;
-          renderJobs();
-          });
-        });
-        list.append(button);
-      });
-      showScreen("districts");
-    }
-
-    function renderJobs() {
-      const branch = branches[state.district];
-      $("#job-prompt").textContent = branch.prompt;
-      const container = $("#job-options");
-      container.replaceChildren();
-      const orderedJobs = shuffle(branch.jobs.map((job, index) => ({ job, index })));
-      orderedJobs.forEach(({ job, index }) => {
-        const button = document.createElement("button");
-        button.type = "button";
-        button.className = `option${state.jobIndex === index ? " selected" : ""}`;
-        button.setAttribute("aria-pressed", state.jobIndex === index ? "true" : "false");
-        button.innerHTML = '<span class="option-text"></span><span class="option-check" aria-hidden="true">✦</span>';
-        button.querySelector(".option-text").textContent = job[1];
-        button.addEventListener("click", () => {
-          confirmChoice(button, () => {
-          state.jobIndex = index;
-          history.push(snapshot());
-          state.questionIndex = 6;
-          state.questionStep = "story";
-          state.pendingCode = null;
-          renderQuestion();
-          });
-        });
-        container.append(button);
-      });
-      showScreen("job");
-    }
-
-    function readPassportForm() {
-      const selectedValues = (groupName) => Array.from(
-        document.querySelectorAll(`[data-passport-group="${groupName}"] input:checked`),
-        (input) => input.value
-      );
-      return {
-        nickname: $("#passport-nickname").value.trim(),
-        schoolLevel: $("#passport-school-level").value,
-        schoolLevelOther: $("#passport-school-level-other").value.trim(),
-        studyTrack: $("#passport-study-track").value,
-        studyTrackOther: $("#passport-study-track-other").value.trim(),
-        province: $("#passport-province").value.trim(),
-        discoverySources: selectedValues("discoverySources"),
-        discoveryOther: $("#passport-discovery-other").value.trim(),
-        selectionFactors: selectedValues("selectionFactors"),
-        selectionStage: document.querySelector('[name="passport-selection-stage"]:checked')?.value || "",
-        creativeWork: selectedValues("creativeWork"),
-        newsChannels: selectedValues("newsChannels")
-      };
-    }
-
-    function syncPassportState() {
-      state.passport = readPassportForm();
-    }
-
-    function updatePassportOtherFields() {
-      $("#passport-school-level-other").classList.toggle("visible", $("#passport-school-level").value === "other");
-      $("#passport-study-track-other").classList.toggle("visible", $("#passport-study-track").value === "other");
-      $("#passport-discovery-other").classList.toggle(
-        "visible",
-        document.querySelector('[data-passport-group="discoverySources"] input[value="other"]').checked
-      );
-    }
-
-    function updateSelectionFactorsHint(message) {
-      const selectedCount = document.querySelectorAll('[data-passport-group="selectionFactors"] input:checked').length;
-      $("#selection-factors-hint").textContent = message || `เลือกแล้ว ${selectedCount}/2 ข้อ (เลือกได้ไม่เกิน 2 ข้อ)`;
-    }
-
-    function renderPassport() {
-      const passport = state.passport;
-      $("#passport-nickname").value = passport.nickname;
-      $("#passport-school-level").value = passport.schoolLevel;
-      $("#passport-school-level-other").value = passport.schoolLevelOther;
-      $("#passport-study-track").value = passport.studyTrack;
-      $("#passport-study-track-other").value = passport.studyTrackOther;
-      $("#passport-province").value = passport.province;
-      $("#passport-discovery-other").value = passport.discoveryOther;
-      document.querySelectorAll("[data-passport-group]").forEach((group) => {
-        const values = passport[group.dataset.passportGroup];
-        group.querySelectorAll("input[type=checkbox]").forEach((input) => {
-          input.checked = values.includes(input.value);
-        });
-      });
-      document.querySelectorAll('[name="passport-selection-stage"]').forEach((input) => {
-        input.checked = input.value === passport.selectionStage;
-      });
-      updatePassportOtherFields();
-      updateSelectionFactorsHint();
-      showScreen("passport");
-    }
-
-    function backFromPassport() {
-      syncPassportState();
-      const previous = history[history.length - 1];
-      if (previous) previous.passport = JSON.parse(JSON.stringify(state.passport));
-      back();
-    }
-
-    function completePassport() {
-      syncPassportState();
-      history.push(snapshot());
-      renderResult();
-      showScreen("result");
-    }
-
-    function continueQuestion() {
-      if (!state.pendingCode) return;
-      const index = state.questionIndex;
-      const previous = snapshot();
-      previous.answers[index] = state.pendingCode;
-      previous.pendingCode = state.pendingCode;
-      history.push(previous);
-      state.answers[index] = state.pendingCode;
-      state.pendingCode = null;
-      if (index === 5) {
-        state.district = null;
-        state.jobIndex = null;
-        renderDistricts();
-      } else if (index === questions.length - 1) {
-        renderResult();
-        showScreen("result");
-      } else {
-        state.questionIndex++;
-        state.questionStep = state.questionIndex <= 10 ? "story" : "question";
-        renderQuestion();
-      }
-    }
-
-    const pairKey = (first, second) => {
-      const direct = `${first}|${second}`;
-      const reverse = `${second}|${first}`;
-      if (Object.prototype.hasOwnProperty.call(mixedTitles, direct)) return direct;
-      if (Object.prototype.hasOwnProperty.call(mixedTitles, reverse)) return reverse;
-      return [first, second].sort().join("|");
-    };
-    function getResultBranches(scoreMap) {
-      const sorted = sortedBranches(scoreMap);
-      const top = sorted[0];
-      const second = sorted[1];
-      const tiedLeaders = sorted.filter((code) => scoreMap[code] === scoreMap[top]);
-      if (tiedLeaders.length > 1) {
-        const finalChoice = state.answers[10];
-        return [finalChoice && tiedLeaders.includes(finalChoice) ? finalChoice : tiedLeaders[0]];
-      }
-      if (scoreMap[top] - scoreMap[second] === 1) return [top, second];
-      return [top];
-    }
-
-    function renderResult() {
-      const scoreMap = scores();
-      const resultBranches = getResultBranches(scoreMap);
-      const lead = branches[resultBranches[0]];
-      const mixed = resultBranches.length === 2;
-      const resultTitle = mixed ? mixedTitles[pairKey(...resultBranches)] : lead.title;
-      let featuredRole = null;
-      let featuredCode = null;
-      if (state.district && state.jobIndex !== null) {
-        const selected = resultJobTitles[state.district]?.[state.jobIndex] || branches[state.district].jobs[state.jobIndex][0];
-        featuredRole = selected;
-        featuredCode = state.district;
-      }
-      const description = mixed
-        ? `คุณมีทั้งพลังของ${branches[resultBranches[0]].title}และ${branches[resultBranches[1]].title} — ${branches[resultBranches[0]].result} ${branches[resultBranches[1]].result}`
-        : lead.result;
-      const displayedCareers = new Set();
-      const careerGroupsHtml = resultBranches.map((code) => {
-        const careers = [...new Set([
-          ...(code === featuredCode && featuredRole ? [featuredRole] : []),
-          ...branches[code].careers
-        ])].filter((career) => {
-          if (displayedCareers.has(career)) return false;
-          displayedCareers.add(career);
-          return true;
-        });
-        return `<div class="career-group"><h4>${escapeHtml(code)} · ${escapeHtml(branches[code].course)}</h4><div class="career-list">${careers.map((career) => `<span class="career${code === featuredCode && career === featuredRole ? " featured" : ""}">${escapeHtml(career)}</span>`).join("")}</div></div>`;
-      }).join("");
-      const selectedCareerHtml = featuredRole && !resultBranches.includes(featuredCode)
-        ? `<div class="career-group"><h4>อาชีพที่คุณเลือก · ${escapeHtml(featuredCode)}</h4><div class="career-list"><span class="career featured">${escapeHtml(featuredRole)}</span></div></div>`
-        : "";
-      $("#result-content").innerHTML = `
-        <div class="result-character-stage${mixed ? " is-mixed" : ""}" aria-label="ภาพสัญลักษณ์ประจำสาขาผลลัพธ์">
-          ${resultBranches.map((code) => `
-            <figure class="result-character-item">
-              <img class="result-character-art" src="${escapeHtml(branches[code].character)}" alt="ภาพประจำสาขา ${escapeHtml(code)}">
-              <figcaption class="result-character-caption">${escapeHtml(code)} · ${escapeHtml(branches[code].course)}</figcaption>
-            </figure>`).join("")}
-        </div>
-        <div class="result-hero">
-          <h2>${escapeHtml(resultTitle)}</h2>
-          <div class="result-branches">
-            ${resultBranches.map((code) => `<span class="result-branch">${escapeHtml(code)} · ${escapeHtml(branches[code].course)}</span>`).join("")}
-          </div>
-          <p class="result-description">${escapeHtml(description)}</p>
-          <section class="result-careers">
-            <h3>อาชีพที่เกี่ยวข้อง</h3>
-            <div class="career-groups">${selectedCareerHtml}${careerGroupsHtml}</div>
-          </section>
-        </div>
-        <div class="result-bottom">
-          <div class="membership-cta">
-            <p class="membership-copy">เพื่อรับข่าวกิจกรรมของ SDM และข้อมูลทุนการศึกษาก่อนใคร</p>
-            <a class="primary-btn" href="https://www.spu.ac.th/digitalmedia/" target="_blank" rel="noopener noreferrer">สมัครสมาชิก</a>
-          </div>
-          <div class="result-actions">
-            <button class="primary-btn" id="restart-btn" type="button">เริ่มการเดินทางใหม่</button>
-          </div>
-        </div>`;
-      $("#restart-btn").addEventListener("click", () => {
-        history = [];
-        state.screen = "intro";
-        showScreen("intro");
-      });
-    }
-
-    function escapeHtml(value) {
-      return String(value).replace(/[&<>"']/g, (char) => ({
-        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
-      })[char]);
-    }
-
-    $("#start-btn").addEventListener("click", showStoryIntro);
-    $("#story-start-btn").addEventListener("click", begin);
-    $("#story-home-btn").addEventListener("click", () => showScreen("intro"));
-    $("#scene-question-btn").addEventListener("click", () => {
-      state.questionStep = "question";
-      renderQuestion();
-    });
-    $("#scene-story-back-btn").addEventListener("click", () => {
-      if (state.questionIndex === 0) showScreen("story");
-      else back();
-    });
-    $("#back-btn").addEventListener("click", back);
-    $("#district-back-btn").addEventListener("click", back);
-    $("#job-back-btn").addEventListener("click", back);
-    $("#passport-form").addEventListener("input", () => {
-      syncPassportState();
-      updatePassportOtherFields();
-    });
-    $("#passport-form").addEventListener("change", (event) => {
-      const input = event.target;
-      let hintMessage = "";
-      if (input.matches('[data-passport-group="selectionFactors"] input[type="checkbox"]') && input.checked) {
-        const selected = document.querySelectorAll('[data-passport-group="selectionFactors"] input:checked');
-        if (selected.length > 2) {
-          input.checked = false;
-          hintMessage = "เลือกได้สูงสุด 2 ข้อ";
-        }
-      }
-      if (input.matches('[data-passport-group="creativeWork"] input[type="checkbox"]')) {
-        const group = input.closest("[data-passport-group]");
-        const noneOption = group.querySelector('input[value="ยังไม่เคยเลย"]');
-        if (input === noneOption && input.checked) {
-          group.querySelectorAll("input[type=checkbox]").forEach((option) => {
-            if (option !== noneOption) option.checked = false;
-          });
-        } else if (input.checked) {
-          noneOption.checked = false;
-        }
-      }
-      syncPassportState();
-      updatePassportOtherFields();
-      updateSelectionFactorsHint(hintMessage);
-    });
-    $("#passport-form").addEventListener("submit", (event) => {
-      event.preventDefault();
-      completePassport();
-    });
-    $("#passport-back-btn").addEventListener("click", backFromPassport);
-  </script>
 </body>
+
 </html>
